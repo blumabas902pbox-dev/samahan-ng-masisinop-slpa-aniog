@@ -83,4 +83,3 @@ It also includes:
 - Registering creates an `Accounts` row only; a matching `Sellers` profile isn't created automatically, so seller-specific features will need that step added.
 - Image assets referenced by the pages (`logo.png`, `SLP.png`, and the product photos on the gallery) aren't part of this file set and will need to sit alongside the HTML files.
 - `db.php` uses the default WAMP credentials (`root`, no password) — fine for local development, but should change before any public deployment.
-- 
