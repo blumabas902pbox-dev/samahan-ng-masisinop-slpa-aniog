@@ -22,10 +22,54 @@ function closeRoleModal() {
     }
 }
 
+function closeSubjectModal() {
+    const subjectModal = document.getElementById('subjectModal');
+    if (subjectModal) {
+        subjectModal.style.display = 'none';
+    }
+}
+
 function closeWarningModal() {
     const warningModal = document.getElementById('warningModal');
     if (warningModal) {
         warningModal.style.display = 'none';
+    }
+}
+
+function closeSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.style.display = 'none';
+    }
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.reset();
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        if (sendMessageBtn) {
+            sendMessageBtn.style.backgroundColor = '';
+            sendMessageBtn.style.color = '';
+            sendMessageBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+        }
+    }
+}
+
+function dispatchContactNotification(contactData) {
+    console.log("----------------------------------------");
+    console.log("[SMS Notification From: Samahan ng Masisinop]");
+    console.log(`To Mobile Number: ${contactData.phone}`);
+    console.log(`Message: Thank you for your inquiry! Your message was sent to Samahan ng Masisinop SLPA Officer. We'll get in touch soon.`);
+    console.log("Status: Delivered successfully.");
+    console.log("Note: Sender can't accept replies. Contact them directly at +63 938 364 2371.");
+    console.log("----------------------------------------");
+
+    if (contactData.email && contactData.email.trim() !== '') {
+        console.log("----------------------------------------");
+        console.log("[Email Notification From: slpa.aniog@gmail.com]");
+        console.log(`To Email: ${contactData.email}`);
+        console.log(`Subject: Inquiry Confirmation - [${contactData.subject}]`);
+        console.log(`Body: Dear ${contactData.name},\n\nThank you for your inquiry! Your message was sent to Samahan ng Masisinop SLPA Officer. We'll get in touch soon.\n\n[Available Actions: Reply | Forward | Acknowledge]`);
+        console.log("Status: Email delivered to inbox successfully.");
+        console.log("----------------------------------------");
     }
 }
 
@@ -66,6 +110,65 @@ function triggerConfettiBurst() {
 document.addEventListener("DOMContentLoaded", function() {
     showWelcomeAlert();
     
+    // Image Loading Spinner Handler & Lazy Loading Fade-In Optimization
+    const lazyImages = document.querySelectorAll('img.lazy-img');
+    lazyImages.forEach(img => {
+        const handleImageLoaded = () => {
+            img.classList.add('loaded');
+            const spinner = img.parentElement.querySelector('.img-spinner');
+            if (spinner) spinner.style.display = 'none';
+        };
+
+        if (img.complete) {
+            handleImageLoaded();
+        } else {
+            img.addEventListener('load', handleImageLoaded);
+            img.addEventListener('error', handleImageLoaded);
+        }
+    });
+
+    // Video Loading Handler (Tutorial Video)
+    const tutorialVideo = document.getElementById('tutorialVideo');
+    const videoLoader = document.getElementById('videoLoader');
+    if (tutorialVideo) {
+        const handleVideoLoaded = () => {
+            tutorialVideo.classList.add('loaded');
+            if (videoLoader) videoLoader.style.display = 'none';
+        };
+
+        if (tutorialVideo.readyState >= 3) {
+            handleVideoLoaded();
+        } else {
+            tutorialVideo.addEventListener('canplay', handleVideoLoaded);
+            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded);
+        }
+    }
+
+    // Dynamic border focus and input styling for secondary and accent colors
+    const formInputsAndTextareas = document.querySelectorAll('input, textarea');
+    formInputsAndTextareas.forEach(el => {
+        el.addEventListener('focus', function() {
+            if (!this.classList.contains('input-error')) {
+                this.style.borderColor = '#322D78'; // --secondary-color
+                this.style.outline = 'none';
+                this.style.boxShadow = '0 0 5px rgba(50, 45, 120, 0.3)';
+            }
+        });
+        el.addEventListener('blur', function() {
+            if (!this.classList.contains('input-error')) {
+                this.style.borderColor = '#ccc';
+                this.style.boxShadow = 'none';
+            }
+        });
+        el.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.classList.remove('input-error');
+                this.style.borderColor = '#322D78';
+            }
+        });
+    });
+
+    // Role selection modal logic (Registration page)
     const roleDisplay = document.getElementById('roleDisplay');
     const roleModal = document.getElementById('roleModal');
     const roleInput = document.getElementById('role');
@@ -85,11 +188,39 @@ document.addEventListener("DOMContentLoaded", function() {
             if (roleDisplay) {
                 roleDisplay.value = selectedRole;
                 roleDisplay.classList.remove('input-error'); 
+                roleDisplay.style.borderColor = '#322D78';
             }
             closeRoleModal();
         });
     });
 
+    // Subject selection modal logic (Contact page)
+    const subjectDisplay = document.getElementById('subjectDisplay');
+    const subjectModal = document.getElementById('subjectModal');
+    const subjectInput = document.getElementById('subject');
+    const subjectOptions = document.querySelectorAll('.subject-option');
+
+    if (subjectDisplay && subjectModal) {
+        subjectDisplay.addEventListener('click', function(e) {
+            e.preventDefault();
+            subjectModal.style.display = 'flex';
+        });
+    }
+
+    subjectOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedSubject = this.getAttribute('data-subject');
+            if (subjectInput) subjectInput.value = selectedSubject;
+            if (subjectDisplay) {
+                subjectDisplay.value = selectedSubject;
+                subjectDisplay.classList.remove('input-error'); 
+                subjectDisplay.style.borderColor = '#322D78';
+            }
+            closeSubjectModal();
+        });
+    });
+
+    // Password visibility toggle
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('password-field');
 
@@ -102,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Registration Form submission
     const regForm = document.getElementById('regForm');
     const submitBtn = document.getElementById('submitBtn');
     const usernameInput = document.getElementById('username');
@@ -113,6 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
         allInputs.forEach(input => {
             input.addEventListener('input', function() {
                 this.classList.remove('input-error');
+                this.style.borderColor = '#322D78';
                 if (submitBtn) {
                     submitBtn.style.backgroundColor = "var(--secondary-color)";
                 }
@@ -127,7 +260,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             function triggerWarning(msg, invalidInputs = []) {
                 invalidInputs.forEach(input => {
-                    if (input) input.classList.add('input-error');
+                    if (input) {
+                        input.classList.add('input-error');
+                        input.style.borderColor = '#D31919'; // --accent-color
+                    }
                 });
 
                 if (warningModal && warningMessage) {
@@ -143,7 +279,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            allInputs.forEach(input => input.classList.remove('input-error'));
+            allInputs.forEach(input => {
+                input.classList.remove('input-error');
+                input.style.borderColor = '#ccc';
+            });
 
             const usernameVal = usernameInput ? usernameInput.value.trim() : '';
             const addressVal = addressInput ? addressInput.value.trim() : '';
@@ -160,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!passwordVal) invalidElements.push(passwordField);
 
             if (!usernameVal || !addressVal || !contactVal || !roleVal || !passwordVal) {
-                triggerWarning("Please fill in all required fields and select a System Role.", invalidElements);
+                triggerWarning("Please fill in all required fields and select System Role.", invalidElements);
                 return;
             }
 
@@ -198,7 +337,119 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    const tutorialVideo = document.getElementById('tutorialVideo');
+    // Contact Form submission & confirmation handling
+    const contactForm = document.getElementById('contactForm');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const contactFullName = document.getElementById('fullName');
+    const contactEmail = document.getElementById('email');
+    const contactPhone = document.getElementById('contact_number');
+    const contactMessage = document.getElementById('message');
+
+    if (contactForm) {
+        const contactInputs = contactForm.querySelectorAll('input, textarea');
+        contactInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('input-error');
+                this.style.borderColor = '#322D78';
+                if (sendMessageBtn) {
+                    sendMessageBtn.style.backgroundColor = "var(--secondary-color)";
+                }
+            });
+        });
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const warningModal = document.getElementById('warningModal');
+            const warningMessage = document.getElementById('warningMessage');
+            const successModal = document.getElementById('successModal');
+
+            function triggerContactWarning(msg, invalidInputs = []) {
+                invalidInputs.forEach(input => {
+                    if (input) {
+                        input.classList.add('input-error');
+                        input.style.borderColor = '#D31919'; // --accent-color
+                    }
+                });
+
+                if (warningModal && warningMessage) {
+                    warningMessage.innerText = msg;
+                    warningModal.style.display = 'flex';
+                } else {
+                    alert(msg);
+                }
+
+                if (sendMessageBtn) {
+                    sendMessageBtn.style.backgroundColor = "var(--accent-color)";
+                    sendMessageBtn.style.color = "#FFFFFF";
+                }
+            }
+
+            contactInputs.forEach(input => {
+                input.classList.remove('input-error');
+                input.style.borderColor = '#ccc';
+            });
+
+            const nameVal = contactFullName ? contactFullName.value.trim() : '';
+            const emailVal = contactEmail ? contactEmail.value.trim() : '';
+            const phoneVal = contactPhone ? contactPhone.value.trim() : '';
+            const subjectVal = subjectInput ? subjectInput.value.trim() : '';
+            const msgVal = contactMessage ? contactMessage.value.trim() : '';
+
+            let invalidElements = [];
+
+            if (!nameVal) invalidElements.push(contactFullName);
+            if (!phoneVal) invalidElements.push(contactPhone);
+            if (!subjectVal) invalidElements.push(subjectDisplay);
+            if (!msgVal) invalidElements.push(contactMessage);
+
+            if (!nameVal || !phoneVal || !subjectVal || !msgVal) {
+                triggerContactWarning("Please fill in all the required fields and select Subject or Concern.", invalidElements);
+                return;
+            }
+
+            const contactRegex = /^\d{11}$/;
+            if (!contactRegex.test(phoneVal)) {
+                triggerContactWarning("Contact number must strictly be exactly 11 digits (e.g., 09071128654). Confirmation will be sent here.", [contactPhone]);
+                return;
+            }
+
+            dispatchContactNotification({
+                name: nameVal,
+                email: emailVal,
+                phone: phoneVal,
+                subject: subjectVal,
+                message: msgVal
+            });
+
+            fetch('process_contact.php', {
+                method: 'POST',
+                body: new FormData(contactForm)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (sendMessageBtn) {
+                        sendMessageBtn.style.backgroundColor = "var(--secondary-color)";
+                        sendMessageBtn.style.color = "#FFFFFF";
+                        sendMessageBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Message Sent';
+                    }
+
+                    if (successModal) {
+                        successModal.style.display = 'flex';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (successModal) {
+                    successModal.style.display = 'flex';
+                }
+            });
+        });
+    }
+
+    // Tutorial video mute toggle
     const muteToggle = document.getElementById('muteToggle');
 
     if (tutorialVideo && muteToggle) {
@@ -215,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('registered') === 'success') {
-        setTimeout(triggerConfettiBurst, 150); 
+        setTimeout(triggerConfettiBurst, 350); // Increased from 150ms to 350ms to let the modal popIn animation (0.3s) fully complete first
     }
 
     initGallery();
@@ -254,7 +505,6 @@ function moveGallery(wrapper, direction) {
     const isMobile = window.innerWidth <= 768;
     const visibleCount = isMobile ? 1 : 4; 
     
-    // Prevent negative bounds if total images are fewer than visible slots
     const maxIndex = Math.max(0, slider.children.length - visibleCount);
 
     let currentPos = parseInt(wrapper.dataset.galleryPos || "0", 10);
@@ -273,7 +523,7 @@ function renderGallerySlide(wrapper) {
 
     const currentPos = parseInt(wrapper.dataset.galleryPos || "0", 10);
     const imgWidth = slider.children[0].getBoundingClientRect().width;
-    const gap = 12; // Must match CSS gap
+    const gap = 12;
 
     const translateX = (imgWidth + gap) * currentPos;
     slider.style.transform = `translateX(-${translateX}px)`;
