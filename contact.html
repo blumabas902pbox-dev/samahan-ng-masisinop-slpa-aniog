@@ -6,6 +6,7 @@
     <title>Samahan ng Masisinop - Contact</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -33,11 +34,11 @@
 </div>
 
 <div class="container">
-    <div class="card-box">
+    <div class="card-box" style="max-width: 600px; margin: 0 auto; text-align: center;">
         <h2>Feel free to ask</h2>
-        <p>Do you have questions about selling your products, member benefits, and more? Visit us or reach out to our SLP team below.</p>
+        <p style="text-align: center; margin-bottom: 20px;">Do you have any questions in regards on how to buy, or sell your products, member benefits, and more? Visit us or reach out directly to our SLP officer below.</p>
         
-      <div class="table-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="table-container" style="max-width: 600px; margin: 0 auto;">
             <table class="feature-table">
                 <tbody>
                     <tr>
@@ -50,14 +51,107 @@
                     </tr>
                     <tr>
                         <td><b><i class="fa-solid fa-envelope"></i> Email Us:</b></td>
-                        <td>slpa.aniog@gmail.com</a></td>
+                        <td>slpa.aniog@gmail.com</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <div class="divider-with-text">
+            <hr class="section-divider">
+            <span class="divider-label">or</span>
+            <hr class="section-divider">
+        </div>
+
+        <div class="contact-form-container" style="max-width: 600px; margin: 20px auto 0; text-align: left;">
+            <div class="card-box" style="box-shadow: none; border: 1px solid #e0e0e0; margin-bottom: 0;">
+                <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 20px;">Send Us a Direct Message</h3>
+                <form id="contactForm" action="#" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="fullName">Your Name:</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="e.g., Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address (Optional):</label>
+                        <input type="email" id="email" name="email" placeholder="e.g., juandelacruz@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number:</label>
+                        <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
+                        <small class="form-help-text">Must be exactly 11 digits only.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subjectDisplay">Subject or Concern:</label>
+                        <input type="text" id="subjectDisplay" class="clickable-input" placeholder="Click this to select your concern..." autocomplete="off" readonly required>
+                        <input type="hidden" id="subject" name="subject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message:</label>
+                        <textarea id="message" name="message" rows="10" placeholder="Write your message here..." required style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; width: 100%; box-sizing: border-box; font-family: inherit; font-size: inherit; resize: vertical; transition: border-color 0.3s ease;"></textarea>
+                    </div>
+
+                    <button type="submit" id="sendMessageBtn" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
+<div id="subjectModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Select a Subject or Concern</h3>
+        <p style="margin-bottom: 20px; font-size: 0.9rem;">Please choose your subject or concern:</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-submit subject-option" data-subject="Buying Products">Buying Products</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Selling Products">Selling Products</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Member Benefits">Member Benefits</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Registration">Registration</button>
+            <button type="button" class="btn-submit subject-option" data-subject="General Inquiry">General Inquiry</button>
+        </div>
+        
+        <button type="button" onclick="closeSubjectModal()" class="btn-submit" style="background-color: var(--accent-color); margin-top: 15px;">Cancel</button>
+    </div>
+</div>
+
+<div id="warningModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 10px;">Oops!</h3>
+        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+          Please fill in all required fields and select Subject or Concern.
+        </p>
+        
+        <button type="button" onclick="closeWarningModal()" class="btn-submit" style="background-color: var(--accent-color);">
+            Try Again
+        </button>
+    </div>
+</div>
+
+<div id="successModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div style="font-size: 3.5rem; color: #28a745; margin-bottom: 10px;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Success!</h3>
+        <p id="successMessage" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
+          You successfully sent a message. We will notify you soon. Thank you for reaching out!
+        </p>
+        
+        <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="background-color: var(--primary-color);">
+            Continue
+        </button>
+    </div>
+</div>
+  
 <footer>
     <p>© 2026 USWAG (Unified System for Work and Growth).</p>
 </footer>
