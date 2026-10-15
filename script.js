@@ -22,6 +22,13 @@ function closeRoleModal() {
     }
 }
 
+function closeTncModal() {
+    const tncModal = document.getElementById('tncModal');
+    if (tncModal) {
+        tncModal.style.display = 'none';
+    }
+}
+
 function closeSubjectModal() {
     const subjectModal = document.getElementById('subjectModal');
     if (subjectModal) {
@@ -102,7 +109,8 @@ function triggerConfettiBurst() {
             startVelocity: 35,
             gravity: 0.6,
             ticks: 250,
-            origin: originParams
+            origin: originParams,
+            zIndex: 99999
         });
     }
 }
@@ -193,6 +201,26 @@ document.addEventListener("DOMContentLoaded", function() {
             closeRoleModal();
         });
     });
+
+    // Terms & Conditions / NPC Modal Logic
+    const openTncModal = document.getElementById('openTncModal');
+    const tncModal = document.getElementById('tncModal');
+    const proceedTncBtn = document.getElementById('proceedTncBtn');
+    const termsCheckbox = document.getElementById('termsCheckbox');
+
+    if (openTncModal && tncModal) {
+        openTncModal.addEventListener('click', function(e) {
+            e.preventDefault();
+            tncModal.style.display = 'flex';
+        });
+    }
+
+    if (proceedTncBtn && tncModal && termsCheckbox) {
+        proceedTncBtn.addEventListener('click', function() {
+            termsCheckbox.checked = true;
+            tncModal.style.display = 'none';
+        });
+    }
 
     // Subject selection modal logic (Contact page)
     const subjectDisplay = document.getElementById('subjectDisplay');
@@ -289,6 +317,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const contactVal = contactInput ? contactInput.value.trim() : '';
             const roleVal = roleInput ? roleInput.value.trim() : '';
             const passwordVal = passwordField ? passwordField.value : '';
+            const isTermsChecked = termsCheckbox ? termsCheckbox.checked : false;
 
             let invalidElements = [];
 
@@ -316,6 +345,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (isWeakPassword(passwordVal)) {
                 triggerWarning("Your password is too weak. Please avoid common combinations (like '1234'), repeated characters, or simple words.", [passwordField]);
+                return;
+            }
+
+            if (!isTermsChecked) {
+                triggerWarning("You must agree to the Terms and Conditions and National Privacy Commission (NPC) privacy notice before creating an account.", [termsCheckbox]);
                 return;
             }
 
@@ -437,6 +471,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (successModal) {
                         successModal.style.display = 'flex';
+                        setTimeout(triggerConfettiBurst, 100);
                     }
                 }
             })
@@ -444,6 +479,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error('Error:', error);
                 if (successModal) {
                     successModal.style.display = 'flex';
+                    setTimeout(triggerConfettiBurst, 100);
                 }
             });
         });
@@ -466,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('registered') === 'success') {
-        setTimeout(triggerConfettiBurst, 350); // Increased from 150ms to 350ms to let the modal popIn animation (0.3s) fully complete first
+        setTimeout(triggerConfettiBurst, 350);
     }
 
     initGallery();

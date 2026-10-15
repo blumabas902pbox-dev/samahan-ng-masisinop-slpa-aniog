@@ -175,6 +175,22 @@ footer p {
     overflow: hidden;
 }
 
+.reg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    align-items: stretch;
+}
+
+.reg-card-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+    height: 100%;
+    margin-bottom: 0;
+}
+
 .master-content-card {
     padding: 25px;
 }
@@ -367,13 +383,6 @@ footer p {
     transform: scale(0.98);
 }
 
-.reg-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-    align-items: start;
-}
-
 .password-wrapper {
     position: relative;
     display: flex;
@@ -494,7 +503,7 @@ hr.section-divider {
 .media-card .video-container video {
     width: 100%;
     height: auto;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 9 / 18;
     object-fit: cover;
     margin-bottom: 0;
     display: block;
