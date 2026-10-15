@@ -118,24 +118,26 @@ function triggerConfettiBurst() {
 document.addEventListener("DOMContentLoaded", function() {
     showWelcomeAlert();
     
-    // Image Loading Spinner Handler & Lazy Loading Fade-In Optimization
-    const lazyImages = document.querySelectorAll('img.lazy-img');
+    // Robust Image Loading Spinner Handler with Fail-Safe Timeout (Prevents Stuck Spinners)
+    const lazyImages = document.querySelectorAll('img.lazy-img, .img-loading-wrapper img');
     lazyImages.forEach(img => {
         const handleImageLoaded = () => {
             img.classList.add('loaded');
-            const spinner = img.parentElement.querySelector('.img-spinner');
+            const spinner = img.parentElement?.querySelector('.img-spinner');
             if (spinner) spinner.style.display = 'none';
         };
 
-        if (img.complete) {
+        if (img.complete && img.naturalHeight !== 0) {
             handleImageLoaded();
         } else {
             img.addEventListener('load', handleImageLoaded);
             img.addEventListener('error', handleImageLoaded);
+            // Fail-safe timeout fallback guarantees spinner never gets stuck
+            setTimeout(handleImageLoaded, 4000);
         }
     });
 
-    // Video Loading Handler (Tutorial Video)
+    // Robust Video Loading Handler (Tutorial Video) with Fail-Safe Timeout
     const tutorialVideo = document.getElementById('tutorialVideo');
     const videoLoader = document.getElementById('videoLoader');
     if (tutorialVideo) {
@@ -144,11 +146,14 @@ document.addEventListener("DOMContentLoaded", function() {
             if (videoLoader) videoLoader.style.display = 'none';
         };
 
-        if (tutorialVideo.readyState >= 3) {
+        if (tutorialVideo.readyState >= 1) { // HAVE_METADATA or higher
             handleVideoLoaded();
         } else {
+            tutorialVideo.addEventListener('loadedmetadata', handleVideoLoaded);
             tutorialVideo.addEventListener('canplay', handleVideoLoaded);
-            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded);
+            tutorialVideo.addEventListener('error', handleVideoLoaded);
+            // Fail-safe timeout fallback guarantees video spinner never gets stuck
+            setTimeout(handleVideoLoaded, 4000);
         }
     }
 
