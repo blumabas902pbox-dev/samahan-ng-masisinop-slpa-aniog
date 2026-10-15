@@ -118,7 +118,7 @@ function triggerConfettiBurst() {
 document.addEventListener("DOMContentLoaded", function() {
     showWelcomeAlert();
     
-    // High-performance Image Loading Spinner Handler & Fast-Decode Optimization
+    // Image Loading Spinner Handler & Lazy Loading Fade-In Optimization
     const lazyImages = document.querySelectorAll('img.lazy-img');
     lazyImages.forEach(img => {
         const handleImageLoaded = () => {
@@ -130,12 +130,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (img.complete) {
             handleImageLoaded();
         } else {
-            img.addEventListener('load', handleImageLoaded, { once: true });
-            img.addEventListener('error', handleImageLoaded, { once: true });
+            img.addEventListener('load', handleImageLoaded);
+            img.addEventListener('error', handleImageLoaded);
         }
     });
 
-    // High-performance Video Loading Handler (Tutorial Video)
+    // Video Loading Handler (Tutorial Video)
     const tutorialVideo = document.getElementById('tutorialVideo');
     const videoLoader = document.getElementById('videoLoader');
     if (tutorialVideo) {
@@ -147,8 +147,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (tutorialVideo.readyState >= 3) {
             handleVideoLoaded();
         } else {
-            tutorialVideo.addEventListener('canplay', handleVideoLoaded, { once: true });
-            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded, { once: true });
+            tutorialVideo.addEventListener('canplay', handleVideoLoaded);
+            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded);
         }
     }
 
