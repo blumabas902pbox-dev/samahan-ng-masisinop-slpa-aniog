@@ -6,6 +6,7 @@
     <title>Samahan ng Masisinop - Contact</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -36,7 +37,7 @@
 <div class="container">
     <div class="card-box" style="max-width: 600px; margin: 0 auto; text-align: center;">
         <h2>Feel free to ask</h2>
-        <p style="text-align: center; margin-bottom: 20px;">Do you have any questions in regards on how to buy, or sell your products, member benefits, and more? Visit us or reach out directly to our SLP officer below.</p>
+        <p style="text-align: center; margin-bottom: 20px;">Do you have any questions in mind? How to buy, or sell your products, member benefits, and more? Visit us or reach out to our SLP officer below.</p>
         
         <div class="table-container" style="max-width: 600px; margin: 0 auto;">
             <table class="feature-table">
@@ -138,16 +139,15 @@
 
 <div id="successModal" class="custom-modal-overlay">
     <div class="custom-modal-box">
-        <div style="font-size: 3.5rem; color: #28a745; margin-bottom: 10px;">
+        <div class="success-icon-wrapper">
             <i class="fa-solid fa-circle-check"></i>
         </div>
-        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Success!</h3>
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Tada!</h3>
         <p id="successMessage" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
-          You successfully sent a message. We will notify you soon. Thank you for reaching out!
-        </p>
+          You successfully sent a message. We will notify you soon. Thank you for reaching out!</p>
         
         <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="background-color: var(--primary-color);">
-            Continue
+            Keep Browsing
         </button>
     </div>
 </div>
