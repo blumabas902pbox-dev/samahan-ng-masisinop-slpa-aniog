@@ -118,24 +118,24 @@ function triggerConfettiBurst() {
 document.addEventListener("DOMContentLoaded", function() {
     showWelcomeAlert();
     
-    // Image Loading Spinner Handler & Lazy Loading Fade-In Optimization
-    const lazyImages = document.querySelectorAll('img.lazy-img');
+    // Optimized Ultra-Fast Image Loading Spinner Handler & Cache Check
+    const lazyImages = document.querySelectorAll('img.lazy-img, img[loading]');
     lazyImages.forEach(img => {
         const handleImageLoaded = () => {
             img.classList.add('loaded');
-            const spinner = img.parentElement.querySelector('.img-spinner');
+            const spinner = img.parentElement?.querySelector('.img-spinner');
             if (spinner) spinner.style.display = 'none';
         };
 
-        if (img.complete) {
+        if (img.complete && img.naturalWidth > 0) {
             handleImageLoaded();
         } else {
-            img.addEventListener('load', handleImageLoaded);
-            img.addEventListener('error', handleImageLoaded);
+            img.addEventListener('load', handleImageLoaded, { once: true });
+            img.addEventListener('error', handleImageLoaded, { once: true });
         }
     });
 
-    // Video Loading Handler (Tutorial Video)
+    // Optimized Ultra-Fast Video Loading Handler (Tutorial Video)
     const tutorialVideo = document.getElementById('tutorialVideo');
     const videoLoader = document.getElementById('videoLoader');
     if (tutorialVideo) {
@@ -147,8 +147,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (tutorialVideo.readyState >= 3) {
             handleVideoLoaded();
         } else {
-            tutorialVideo.addEventListener('canplay', handleVideoLoaded);
-            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded);
+            tutorialVideo.addEventListener('canplaythrough', handleVideoLoaded, { once: true });
+            tutorialVideo.addEventListener('loadeddata', handleVideoLoaded, { once: true });
+            tutorialVideo.addEventListener('error', handleVideoLoaded, { once: true });
         }
     }
 

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samahan ng Masisinop - Registration</title>
+    <!-- Preload Critical Logos & Tutorial Video -->
+    <link rel="preload" as="image" href="logo.png">
+    <link rel="preload" as="image" href="SLP.png">
+    <link rel="preload" as="video" href="Video_Tutorial.mp4" type="video/mp4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
@@ -13,14 +17,14 @@
 <div class="fixed-header-wrapper">
     <header class="site-header">
         <div class="header-logo-left">
-            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager" fetchpriority="high">
         </div>
         <div class="header-center">
             <h1>Samahan ng Masisinop</h1>
             <p>Sustainable Livelihood Program (SLPA) Aniog</p>
         </div>
         <div class="header-logo-right">
-            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager" fetchpriority="high">
         </div>
     </header>
 
