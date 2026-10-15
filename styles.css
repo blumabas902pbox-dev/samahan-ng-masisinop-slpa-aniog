@@ -566,7 +566,6 @@ hr.section-divider {
     gap: 12px; 
     transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform;
-    transform: translateZ(0); /* Hardware Acceleration for Ultra-Fast Sliding */
 }
 
 .gallery-card-box {
@@ -709,7 +708,7 @@ hr.section-divider {
 
 .lazy-img {
     opacity: 0;
-    transition: opacity 0.25s ease-in-out; /* Faster fade-in */
+    transition: opacity 0.4s ease-in-out;
     width: 100%;
     object-fit: cover;
     display: block;
@@ -746,7 +745,7 @@ hr.section-divider {
 
 #tutorialVideo {
     opacity: 0;
-    transition: opacity 0.25s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
 }
 
 #tutorialVideo.loaded {
