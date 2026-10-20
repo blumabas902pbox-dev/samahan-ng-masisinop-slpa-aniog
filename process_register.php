@@ -13,7 +13,7 @@ if ($allowed) {
     header('Vary: Origin');
 }
 header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
 header('Access-Control-Max-Age: 86400');
 header('Content-Type: application/json; charset=utf-8');
 
@@ -27,10 +27,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST')    { respond(405, ['error' => 'POST only.']); }
 
 $in = json_decode(file_get_contents('php://input'), true);
-if (!is_array($in)) { respond(400, ['error' => 'Invalid JSON.']); }
-
-require_once __DIR__ . '/db.php';
-
-switch ($in['action'] ?? '') {
-    case 'register':   register($pdo, $in);   break;
-    case 'login':      login($pdo, $in);      break;
