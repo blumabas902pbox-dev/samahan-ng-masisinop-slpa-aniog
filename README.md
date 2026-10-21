@@ -1,140 +1,109 @@
-# USWAG
-### Unified System for Work and Growth
+# USWAG — Unified System for Work and Growth
 
-A livelihood-tracking web system developed for **Samahan ng Masisinop SLPA**, a Sustainable Livelihood Program Association (SLPA) located in **Barangay Aniog, Sagñay, Camarines Sur, Philippines**.
+A livelihood-tracking web system for **Samahan ng Masisinop SLPA**, a Sustainable Livelihood Program Association (SLPA) in **Barangay Aniog, Sagñay, Camarines Sur** (Region V, Bicol).
 
-USWAG provides both:
+USWAG provides a public-facing website and a database-driven management system designed to support local farmers and micro-entrepreneurs. The platform helps track sellers, products, inventory, sales, expenses, capital, and receipts while promoting the association's products online.
 
-- A public-facing website for promoting local products and the organization.
-- A database-driven livelihood management system for tracking sellers, products, inventory, expenses, capital, sales, and receipts.
-
-This project was developed as a Bachelor of Science in Information Technology (BSIT) project at **Partido State University** in support of the **Department of Social Welfare and Development (DSWD) Sustainable Livelihood Program (SLP)**.
+Developed as a BSIT project at Partido State University in support of the DSWD Sustainable Livelihood Program (SLP).
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [About the Project](#about-the-project)
-- #objectives
 - [Features](#features)
-- #technology-stack
+- [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Database Design](#database-design)
 - [Getting Started](#getting-started)
-- [Configuration](#configuration)
 - [Pages](#pages)
-- #privacy-and-compliance
-- #future-improvements
-- #credits-and-author
+- [Privacy & Compliance](#privacy--compliance)
+- [Credits & Author](#credits--author)
 
 ---
 
 ## About the Project
 
-**Samahan ng Masisinop SLPA** is a DSWD-accredited livelihood organization whose members engage in the production and trade of:
+**Samahan ng Masisinop SLPA** is a DSWD-accredited beneficiary civil society organization based in Aniog, Sagñay, Camarines Sur. Members produce and trade local agricultural products such as:
 
 - Copra
 - Yellow Corn
 - Palay (Rice)
 - Cassava
-- Other agricultural products
-
-USWAG was designed to modernize record-keeping and provide digital visibility for local farmers and micro-entrepreneurs.
-
-The system combines:
-
-- Website presence
-- Seller and buyer registration
-- Product showcasing
-- Livelihood monitoring
-- Financial tracking
-- Offline-first sales synchronization
-
----
-
-## Objectives
 
 USWAG aims to:
 
 - Promote the association and its products online.
-- Allow Buyers and Sellers to create accounts.
-- Maintain accurate records of sales and inventory.
-- Track expenses and capital investments.
-- Support offline-first transactions.
-- Generate digital receipt records.
-- Improve operational transparency for association members.
+- Allow Buyers and Sellers to register and manage accounts.
+- Maintain records of sales, inventory, expenses, and capital.
+- Support offline-first sales synchronization in areas with limited internet connectivity.
+- Generate digital receipts suitable for thermal printer output.
 
 ---
 
-## ✨ Features
+## Features
 
 ### Public Website
 
-- Responsive multi-page interface
+- Responsive multi-page website
 - Shared navigation and footer
-- Image galleries and product showcases
 - Welcome modal with localStorage support
-- Lazy-loaded product images
+- Product gallery with image carousels
+- Lazy-loading effects and loading indicators
 - Registration tutorial video
-- Contact page with inquiry categories
-- Mobile-friendly design
+- Confetti animations for successful actions
 
-### User Registration
+### Registration System
 
-- Buyer registration
-- Seller registration
-- Password strength validation
-- 11-digit contact number validation
-- Prevention of weak passwords
-- Terms and Conditions acceptance
+- Buyer and Seller role selection
+- Client-side form validation
+- Contact number verification
+- Password strength checking
+- Terms and Conditions agreement
 - NPC Privacy Notice acceptance
 
-### Communication
+### Contact System
 
-- Contact inquiry form
-- Email confirmation support
-- SMS confirmation support via Semaphore API
+- Inquiry categories:
+  - Buying Products
+  - Selling Products
+  - Member Benefits
+  - Registration
+  - General Inquiry
+- Confirmation notifications through SMS or email
 
 ### Database Features
 
-- 10 normalized tables
-- Foreign key enforcement
-- Stored procedures
-- SQL views
-- Business automation triggers
-- Inventory monitoring
-- Livelihood financial tracking
-
-### Sales Management
-
-- Sales records
-- Inventory updates
-- Capital monitoring
-- Expense tracking
-- JSON receipt generation
-- Offline-to-online synchronization
+- 10 normalized database tables
+- Foreign key relationships and indexing
+- Cash-flow reporting view
+- Offline synchronization procedure
+- Automated business logic using triggers
+- Role-based accounts:
+  - Buyer
+  - Seller
+  - SLP Admin
 
 ---
 
-## 🛠 Technology Stack
+## Tech Stack
 
 | Layer | Technology |
 |---------|------------|
-| Frontend | HTML5, CSS3, JavaScript |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
 | Libraries | Font Awesome 6.5.1, Canvas Confetti 1.6.0 |
 | Backend | PHP 7.4+ (PDO) |
 | Database | MySQL 8.0+ / MariaDB |
-| Email Service | PHPMailer via Gmail SMTP |
-| SMS Service | Semaphore API |
-| Hosting | GitHub Pages (Frontend) + PHP/MySQL Host |
+| Email | PHPMailer |
+| SMS | Semaphore API |
+| Hosting | GitHub Pages (frontend) and PHP/MySQL hosting |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
-USWAG/
-│
+.
 ├── index.html
 ├── about.html
 ├── portfolio.html
@@ -149,7 +118,6 @@ USWAG/
 ├── process_register.php
 ├── process_contact.php
 ├── send_email.php
-│
 ├── uswag_db.sql
 │
 ├── logo.png
@@ -158,93 +126,75 @@ USWAG/
 ├── Aniog_HQ.jpg
 ├── Farmers_in_Action.jpeg
 ├── SLPA_Certification.jpg
-├── Video_Tutorial.mp4
-│
-└── config.php
+└── Video_Tutorial.mp4
 ```
-
-> **Note:** `config.php` is intentionally excluded from the repository for security purposes.
 
 ---
 
-## 🗄 Database Design
+## Database Design
 
-The database consists of **10 normalized tables**:
+The `uswag_db.sql` file creates ten core tables:
 
-| Table | Purpose |
-|---------|---------|
-| Accounts | User accounts and roles |
-| Sellers | Seller information |
-| Categories | Product categories |
-| Products | Product records |
-| Sales | Sales transactions |
-| Sale_Details | Individual sale items |
-| Inventory_Transactions | Stock movement history |
-| Expenses | Operational expenses |
-| Capital_Management | Capital monitoring |
-| Receipts | JSON receipt records |
+| # | Table | Purpose |
+|---|--------|---------|
+| 1 | Accounts | Login accounts and roles |
+| 2 | Sellers | Seller profiles |
+| 3 | Categories | Product categories |
+| 4 | Products | Products and stock information |
+| 5 | Sales | Sales transactions |
+| 6 | Sale_Details | Individual sale items |
+| 7 | Inventory_Transactions | Inventory movement history |
+| 8 | Expenses | Seller expenses |
+| 9 | Capital_Management | Capital tracking |
+| 10 | Receipts | JSON receipt storage |
 
 ### Database View
 
-#### `vw_seller_cash_flow`
-
-Provides:
-
-- Total revenue
-- Total expenses
-- Net cash flow
-
-per seller.
-
----
+- `vw_seller_cash_flow`
+  - Revenue tracking
+  - Expense tracking
+  - Net cash flow reporting
 
 ### Stored Procedure
 
-#### `sp_sync_offline_sales()`
+- `sp_sync_offline_sales()`
+  - Synchronizes offline transactions
+  - Updates pending receipt status
 
-Processes:
+### Database Triggers
 
-- Offline transactions
-- Unsynced receipts
+- Stock validation before transactions
+- Automatic stock updates
+- Capital deduction from expenses
+- Inventory audit logging
+- Capital adjustments on sales status updates
+- Capital updates for paid sales additions
+- Automatic receipt generation
 
-and updates synchronization status.
+### Included Sample Queries
 
----
+The SQL file also contains ready-made operational queries for:
 
-### Triggers
-
-The database includes automated triggers for:
-
-1. Stock availability validation
-2. Inventory deduction
-3. Capital balance adjustment
-4. Sale inventory synchronization
-5. Payment status updates
-6. Additional paid-sale adjustments
-7. Automatic receipt generation
-
----
-
-### Seed Data
-
-Included categories:
-
-- Agricultural Products
-- Raw Materials
-- Handicrafts
+- Cash-flow analysis
+- Inventory audits
+- Offline-sync monitoring
+- Low-stock detection
+- Seller performance rankings
+- Profit and loss reporting
+- Receipt retrieval
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- PHP 7.4+
+- PHP 7.4 or newer
+- PDO MySQL Extension
+- cURL Extension
 - MySQL 8.0+ or MariaDB
-- Composer
-- XAMPP, WAMP, Laragon, or equivalent
-
----
+- Composer (for PHPMailer)
+- XAMPP, WAMP, Laragon, or a compatible web host
 
 ### Installation
 
@@ -257,36 +207,11 @@ cd uswag
 
 #### Create the Database
 
-Create a database named:
-
-```sql
-uswag_db
-```
-
-Import the schema:
+Import the SQL file using phpMyAdmin or the command line:
 
 ```bash
-mysql -u username -p uswag_db < uswag_db.sql
+mysql -u username -p database_name < uswag_db.sql
 ```
-
-or through **phpMyAdmin**.
-
----
-
-#### Create `config.php`
-
-```php
-<?php
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'uswag_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-
-?>
-```
-
----
 
 #### Install PHPMailer
 
@@ -294,126 +219,58 @@ define('DB_PASS', '');
 composer require phpmailer/phpmailer
 ```
 
----
-
 #### Run the Project
 
-Place the project in your web server root directory.
-
-Example:
+Place the project folder inside your web server's root directory and access:
 
 ```text
-xampp/htdocs/uswag
-```
-
-Open:
-
-```text
-http://localhost/uswag/
+http://localhost/index.html
 ```
 
 ---
 
-## ⚙ Configuration
+## Pages
 
-### Gmail SMTP
-
-Configure:
-
-```php
-$mail->Host = 'smtp.gmail.com';
-$mail->Username = 'your_email@gmail.com';
-$mail->Password = 'your_app_password';
-```
-
-### Semaphore API
-
-Configure:
-
-```php
-$apiKey = "YOUR_SEMAPHORE_API_KEY";
-```
+| Page | File | Description |
+|--------|------|-------------|
+| Home | index.html | Association overview and featured images |
+| About | about.html | Information about USWAG and the organization |
+| Products | portfolio.html | Product showcase and gallery |
+| Contact | contact.html | Inquiry form and contact details |
+| Registration | register.html | Buyer and Seller registration |
+| Confirmation | thankyou.html | Registration success page |
 
 ---
 
-## 🌐 Pages
+## Privacy & Compliance
 
-| Page | File |
-|--------|--------|
-| Home | index.html |
-| About | about.html |
-| Products | portfolio.html |
-| Contact | contact.html |
-| Registration | register.html |
-| Confirmation | thankyou.html |
+- Registration requires user consent to the Terms and Conditions.
+- Registration requires acceptance of the National Privacy Commission (NPC) Privacy Notice.
+- Passwords are securely stored using hashing.
+- Personal information is used only for legitimate livelihood operations.
+- The project follows the principles of the Philippine Data Privacy Act of 2012 (RA 10173).
 
 ---
 
-## 🔐 Privacy and Compliance
+## Credits & Author
 
-USWAG follows the principles of the Philippine **Data Privacy Act of 2012 (Republic Act No. 10173)**.
+**Developer**  
+Bryan Jay M. Lumabas (BJ)  
+BSIT, Partido State University
 
-Measures include:
+**Portfolio**  
+https://blumabas902pbox-dev.github.io/Personal-Profile/
 
-- User consent collection
-- Password hashing
-- Controlled access to user information
-- Privacy Notice acknowledgment
-- Secure credential management
-
-Collected information is used solely for livelihood-related operations and organizational purposes.
-
----
-
-## 🔮 Future Improvements
-
-Potential enhancements include:
-
-- Seller dashboard
-- Admin analytics panel
-- Mobile application integration
-- QR-coded receipts
-- Live inventory alerts
-- Sales forecasting
-- Multi-association support
-- Cloud synchronization
-
----
-
-## 👨‍💻 Credits and Author
-
-### Developer
-
-**Bryan Jay M. Lumabas**  
-Bachelor of Science in Information Technology  
-Partido State University
-
-### Portfolio
-
-🔗 https://blumabas902pbox-dev.github.io/Personal-Profile/
-
-### Beneficiary Organization
-
-**Samahan ng Masisinop SLPA**  
+**Beneficiary Organization**  
+Samahan ng Masisinop SLPA  
 Aniog, Sagñay, Camarines Sur
 
-### Partner Program
-
-**DSWD Sustainable Livelihood Program (SLP)**  
+**Program Partner**  
+DSWD Sustainable Livelihood Program (SLP)  
 Field Office V – Bicol Region
 
 ---
 
-## Acknowledgments
+Logos, certification images, and organizational assets belong to their respective owners.
 
-Special thanks to:
-
-- Department of Social Welfare and Development (DSWD)
-- Sustainable Livelihood Program (SLP)
-- National Privacy Commission (NPC)
-- Samahan ng Masisinop SLPA
-- Partido State University
-
----
-
-© 2026 Bryan Jay M. Lumabas. All Rights Reserved.
+© BJML. All Rights Reserved.
