@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samahan ng Masisinop - Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+        </div>
+        <div class="header-center">
+            <h1>Samahan ng Masisinop</h1>
+            <p>Sustainable Livelihood Program (SLPA) Aniog</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html" class="active">Contact Us</a>
+        <a href="register.html">Register Now</a>
+    </nav>
+</div>
+
+<!-- Main Split Container -->
+<div class="container contact-page-container" id="contactPageContainer">
+    <div class="card-box contact-master-card" id="contactMasterCard" style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <h2>Feel free to ask</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Do you have any questions in mind? How to buy, or sell your products, member benefits, and more? Visit us or reach out to our SLP officer below.</p>
+        
+        <div class="table-container" style="max-width: 600px; margin: 0 auto;">
+            <table class="feature-table">
+                <tbody>
+                    <tr>
+                        <td><b><i class="fa-solid fa-location-dot"></i> Located at:</b></td>
+                        <td><a href="#" id="openMapModalBtn">Zone 1, Aniog, Sagñay, Camarines Sur</a></td>
+                    </tr>
+                    <tr>
+                        <td><b><i class="fa-solid fa-phone"></i> Call or Text:</b></td>
+                        <td>+63 938 364 2371</td>
+                    </tr>
+                    <tr>
+                        <td><b><i class="fa-solid fa-envelope"></i> Email Us:</b></td>
+                        <td>slpa.aniog@gmail.com</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="divider-with-text">
+            <hr class="section-divider">
+            <span class="divider-label">or</span>
+            <hr class="section-divider">
+        </div>
+
+        <div class="contact-form-container" style="max-width: 600px; margin: 20px auto 0; text-align: left;">
+            <div class="card-box" style="box-shadow: none; border: 1px solid #e0e0e0; margin-bottom: 0;">
+                <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 20px;">Send Us a Direct Message</h3>
+                <form id="contactForm" action="#" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="fullName">Your Name:</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="e.g., Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address (Optional):</label>
+                        <input type="email" id="email" name="email" placeholder="e.g., juandelacruz@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number:</label>
+                        <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
+                        <small class="form-help-text">Must be exactly 11 digits only.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subjectDisplay">Subject or Concern:</label>
+                        <input type="text" id="subjectDisplay" class="clickable-input" placeholder="Click this to select your concern..." autocomplete="off" readonly required>
+                        <input type="hidden" id="subject" name="subject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message:</label>
+                        <textarea id="message" name="message" rows="10" placeholder="Write your message here..." required style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; width: 100%; box-sizing: border-box; font-family: inherit; font-size: inherit; resize: vertical; transition: border-color 0.3s ease;"></textarea>
+                    </div>
+
+                    <button type="submit" id="sendMessageBtn" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side Column for Map & Message Summary Card -->
+    <div class="map-column-wrapper">
+        <div id="mapModalWindow" class="map-modal-window">
+            <div class="profile-modal-header" id="mapModalHeader">
+                <div class="browser-tab-dots">
+                    <span class="dot-red" onclick="closeMapModal()"></span>
+                    <span class="dot-yellow"></span>
+                    <span class="dot-green"></span>
+                    <span class="dot-brown"></span>
+                    <span class="dot-logo-green"></span>
+                </div>
+                <div class="browser-address-bar">
+                    <i class="fa-solid fa-location-dot" style="font-size: 0.75rem; color: #3A86FF;"></i>
+                    <span>Samahan ng Masisinop SLPA - Zone 1, Aniog, Sagñay, Camarines Sur</span>
+                </div>
+                <div class="profile-modal-controls">
+                    <button type="button" class="zoom-ctrl-btn" id="mapZoomOutBtn" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                    <span id="mapZoomDisplay" style="font-size: 0.75rem; font-weight: 600; color: #444; min-width: 38px; text-align: center;">100%</span>
+                    <button type="button" class="zoom-ctrl-btn" id="mapZoomInBtn" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <button type="button" class="zoom-ctrl-btn" id="mapResetBtn" title="Reset View"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button type="button" class="close-profile-modal" onclick="closeMapModal()" title="Close Map"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div class="profile-modal-viewport" id="mapViewport">
+                <div class="profile-canvas-scaler" id="mapCanvasScaler">
+                    <iframe src="https://www.google.com/maps?q=Aniog,+Sag%C3%B1ay,+Camarines+Sur&output=embed" title="Samahan ng Masisinop SLPA Location Map" loading="lazy" allowfullscreen=""></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad placeholder. Paste your ad network's tag inside #adSlotContent (or point it at this id). -->
+        <aside id="adSlot" class="ad-slot" aria-label="Advertisement" data-ad-placement="contact-between-map-and-status">
+            <span class="ad-slot-label">Advertisement</span>
+            <div id="adSlotContent" class="ad-slot-content"></div>
+            <div class="ad-slot-placeholder"><i class="fa-solid fa-rectangle-ad"></i> <span>Ad space</span></div>
+        </aside>
+
+        <div id="sentMessageCard" class="sent-message-popup-card">
+            <button type="button" id="envelopeBtn" class="envelope-trigger" title="Open your message" aria-label="Open your message">
+                <i class="fa-solid fa-envelope"></i>
+            </button>
+            <div class="sent-message-body">
+                <div class="sent-message-header">
+                    <span class="status-line">This message is for</span>
+                    <span id="messageStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> Review</span>
+                </div>
+                <div class="sent-message-actions">
+                    <button type="button" id="viewMessageBtn" class="btn-view-message">
+                        <i class="fa-solid fa-envelope-open-text"></i> View Message
+                    </button>
+                    <button type="button" id="editMessageBtn" class="btn-edit-message">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit &amp; Resend
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="envelopeModal" class="custom-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="envelopeTitle">
+    <div class="custom-modal-box envelope-modal-box">
+        <button type="button" class="envelope-close" onclick="closeEnvelopeModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+
+        <div id="envelopeStage" class="envelope-stage">
+            <div class="envelope">
+                <div class="env-back"></div>
+                <div class="env-letter"><span></span><span></span><span></span><span></span></div>
+                <div class="env-front"></div>
+                <div class="env-flap"></div>
+            </div>
+        </div>
+
+        <h3 id="envelopeTitle" class="envelope-title">Your Message</h3>
+        <div class="envelope-status">
+            <span>This message is for</span>
+            <span id="envStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> Review</span>
+        </div>
+
+        <div id="letterReader" class="letter-reader">
+            <button type="button" id="letterFold" class="letter-fold" title="Fold the letter back into the envelope" aria-label="Fold the letter back into the envelope"></button>
+            <div class="letter-scroll">
+                <p id="envSubject" class="letter-subject"></p>
+                <p id="envMessageText" class="letter-text"></p>
+                <p class="letter-hint">Tap the folded corner to put the letter back in the envelope.</p>
+            </div>
+        </div>
+
+        <div class="envelope-actions">
+            <button type="button" id="envViewBtn" class="btn-submit" style="background-color: var(--primary-color);">
+                <i class="fa-solid fa-envelope-open-text"></i> <span>View Message</span>
+            </button>
+            <button type="button" id="envEditBtn" class="btn-submit">
+                <i class="fa-solid fa-pen-to-square"></i> Edit &amp; Resend
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="subjectModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Select a Subject or Concern</h3>
+        <p style="margin-bottom: 20px; font-size: 0.9rem;">Please choose your subject or concern:</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-submit subject-option" data-subject="Buying Products">Buying Products</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Selling Products">Selling Products</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Member Benefits">Member Benefits</button>
+            <button type="button" class="btn-submit subject-option" data-subject="Registration">Registration</button>
+            <button type="button" class="btn-submit subject-option" data-subject="General Inquiry">General Inquiry</button>
+        </div>
+        
+        <button type="button" onclick="closeSubjectModal()" class="btn-submit" style="background-color: var(--accent-color); margin-top: 15px;">Cancel</button>
+    </div>
+</div>
+
+<div id="warningModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 10px;">Oops!</h3>
+        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+          Please fill in all required fields and select Subject or Concern.
+        </p>
+        
+        <button type="button" onclick="closeWarningModal()" class="btn-submit" style="background-color: var(--accent-color);">
+            Try Again
+        </button>
+    </div>
+</div>
+
+<div id="successModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="success-icon-wrapper">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Tada!</h3>
+        <p id="successMessage" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
+          You successfully sent a message. We will notify you soon. Thank you for reaching out!</p>
+        
+        <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="background-color: var(--primary-color);">
+            Keep Browsing
+        </button>
+    </div>
+</div>
+  
+<footer>
+    <p>© 2026 USWAG (Unified System for Work and Growth).</p>
+</footer>
+
+</body>
+</html>

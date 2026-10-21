@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samahan ng Masisinop - Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+        </div>
+        <div class="header-center">
+            <h1>Samahan ng Masisinop</h1>
+            <p>Sustainable Livelihood Program (SLPA) Aniog</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="register.html" class="active">Register Now</a>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="card-box master-content-card">
+        <h2>Want to Be a Member?</h2>
+        <p>Join the Samahan ng Masisinop community even if you are from another barangay, to start tracking your products, recording sales, or sourcing local goods from Barangay Aniog.</p>
+
+        <div class="reg-grid">
+            <div class="card-box reg-card-box">
+                <h3>Create Your Account</h3>
+                <form id="regForm" action="#" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="username">Full Name:</label>
+                        <input type="text" id="username" name="username" placeholder="e.g., Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Permanent Address:</label>
+                        <input type="text" id="address" name="address" placeholder="e.g., Zone 1, Aniog, Sagñay, Camarines Sur" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number:</label>
+                        <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
+                        <small class="form-help-text">Must be exactly 11 digits only.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="roleDisplay">System Role:</label>
+                        <input type="text" id="roleDisplay" class="clickable-input" placeholder="Click this to select your role..." autocomplete="off" readonly required>
+                        <input type="hidden" id="role" name="role" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password-field">Password:</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password-field" name="password" placeholder="Enter a strong password" autocomplete="new-password" required>
+                            <i class="fa-solid fa-eye toggle-password-icon" id="togglePassword"></i>
+                        </div>
+                        <small class="form-help-text">Must be at least 8 characters long.</small>
+                    </div>
+
+                    <div class="form-group terms-group" style="margin-top: 15px; display: flex; align-items: flex-start; gap: 10px;">
+                        <input type="checkbox" id="termsCheckbox" name="terms" required style="width: 20px; height: 20px; accent-color: var(--primary-color); margin-top: 2px; cursor: pointer;">
+                        <label for="termsCheckbox" style="font-weight: normal; font-size: 0.9rem; cursor: pointer; text-align: left;">
+                            I agree to the Terms and Conditions and authorize the National Privacy Commission (NPC) of the Philippines and USWAG to collect, process, and store my personal information in accordance with the (RA 10173) Data Privacy Act of 2012. 
+                            <a href="#" id="openTncModal" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">View USWAG Terms &amp; NPC Notice</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn" class="btn-submit" style="margin-top: 15px;">
+                        <i class="fa-solid fa-user-plus"></i> Submit Registration
+                    </button>
+                </form>
+            </div>
+      
+            <div class="card-box media-card reg-card-box">
+                <h3 style="text-align: center;">Need Help Creating an Account?</h3>
+                <p>Watch this 1-minute video tutorial and see how to register as a local Seller or inter-barangay Buyer.</p>
+        
+                <div class="video-container" style="position: relative;">
+                    <div id="videoLoader" class="video-loading-spinner"></div>
+                    <video id="tutorialVideo" loop autoplay muted playsinline preload="metadata">
+                        <source src="Video_Tutorial.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+            
+                    <button id="muteToggle" class="mute-btn" aria-label="Toggle Sound">
+                        <i class="fa-solid fa-volume-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<div id="roleModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <h3 style="color: var(--secondary-color); margin-bottom: 10px;">Select System Role</h3>
+        <p style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-color);">Please choose your account type:</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-submit role-option" data-role="Buyer">Buyer</button>
+            <button type="button" class="btn-submit role-option" data-role="Seller">Seller</button>
+        </div>
+        
+        <button type="button" onclick="closeRoleModal()" class="btn-submit" style="background-color: var(--accent-color); margin-top: 15px;">Cancel</button>
+    </div>
+</div>
+
+<div id="tncModal" class="custom-modal-overlay">
+    <div class="custom-modal-box" style="max-width: 600px; text-align: left; max-height: 90vh; overflow-y: auto;">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <img src="NPC.png" alt="National Privacy Commission Logo" style="width: 150px; height: 200px; object-fit: contain; background: transparent; display: inline-block;">
+        </div>
+        <br>
+        <h3 style="color: var(--secondary-color); text-align: center; font-size: 1.35rem; margin-bottom: 5px;">National Privacy Commission of the Philippines</h3>
+        <h4 style="color: var(--primary-color); text-align: center; font-size: 1.02rem; margin-bottom: 20px;">Data Privacy Act of 2012 (Republic Act No. 10173) &amp; System Compliance</h4>
+        <br>
+      
+        <div style="font-size: 0.92rem; line-height: 1.6; color: var(--text-color); margin-bottom: 20px;">
+            <p style="margin-bottom: 12px; text-align: justify;">
+                Welcome to <strong>Samahan ng Masisinop - USWAG (Unified System for Work and Growth)</strong>. In compliance with Republic Act No. 10173 (Data Privacy Act of 2012) of the Philippines, we are committed to safeguarding your personal data and upholding your fundamental right to digital privacy.
+            </p><br>
+            <p style="margin-bottom: 12px; text-align: justify;">
+                <strong>Section 1: Collection of Personal Information.</strong> By creating an account, you explicitly authorize USWAG and the Barangay Aniog Sustainable Livelihood Program Association (SLPA) to collect, process, record, organize, store, and update your personal data (including Full Name, Permanent Address, Contact Number, and System Role).
+            </p>
+            <p style="margin-bottom: 12px; text-align: justify;">
+                <strong>Section 2: Purpose and Use of Data.</strong> Information collected is strictly utilized for community member authentication, coordinating agricultural and livelihood product transactions between buyers and sellers, managing microenterprise inventory records, and broadcasting essential system announcements.
+            </p>
+            <p style="margin-bottom: 12px; text-align: justify;">
+                <strong>Section 3: Data Security Measures.</strong> In accordance with NPC standards and guidelines, appropriate organizational, physical, and technical security protocols are enforced to protect your personal information against unauthorized access, disclosure, alteration, or destruction.
+            </p>
+            <p style="margin-bottom: 0; text-align: justify;">
+                <strong>Section 4: Rights of the Data Subject.</strong> As a registered user, you retain the right to be informed, to access, rectify, or erase your data, and to lodge complaints with the National Privacy Commission for any privacy violations.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="button" id="proceedTncBtn" class="btn-submit" style="background-color: var(--primary-color); margin-bottom: 12px;">
+                <i class="fa-solid fa-check-to-slot"></i> Proceed and Continue
+            </button>
+            <div style="font-size: 0.85rem; text-align: center;">
+                <a href="https://www.privacy.gov.ph" target="_blank" rel="noopener noreferrer" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">
+                    <i class="fa-solid fa-external-link-alt"></i> Learn more about the Data Privacy Act (Official NPC Portal)
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="warningModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px; animation: pulseCheck 0.6s ease-in-out;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 10px;">Oops!</h3>
+        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center; color: var(--text-color);">
+          Please fill in all required fields and select a System Role.</p>
+        
+        <button type="button" onclick="closeWarningModal()" class="btn-submit" style="background-color: var(--accent-color);">
+            Try Again
+        </button>
+    </div>
+</div>
+  
+<div id="successModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="success-icon-wrapper">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Tada!</h3>
+        <p id="successMessage" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
+          Your account was created successfully. Welcome to Samahan ng Masisinop!</p>
+
+        <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="background-color: var(--primary-color);">
+            Keep Browsing
+        </button>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 USWAG (Unified System for Work and Growth).</p>
+</footer>
+
+</body>
+</html>

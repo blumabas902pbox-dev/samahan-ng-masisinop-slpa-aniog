@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samahan ng Masisinop - Homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+        </div>
+        <div class="header-center">
+            <h1>Samahan ng Masisinop</h1>
+            <p>Sustainable Livelihood Program (SLPA) Aniog</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html" class="active">Home</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="register.html">Register Now</a>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="card-box master-content-card">
+        
+        <div class="content-section">
+            <h2>Welcome to SLPA Livelihood Tracker</h2>
+            <p>Sustainable Livelihood Program Association of Aniog (SLPA) Samahan ng Masisinop is a community that deserves a system designed to make business easier. We help local producers in Barangay Aniog to track their goods, record sales, and monitor their income effortlessly.</p>
+        </div>
+      
+        <div class="card-box gallery-card-box">
+            <h3>SLP Center & Operations</h3>
+            <div class="gallery-wrapper">
+                <button class="gal-arrow" id="prevBtn" aria-label="Previous">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                
+                <div class="gallery-viewport">
+                    <div class="gallery-slider" id="gallerySlider">
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Aniog HQ.jpg" alt="SLPA Proof 1" loading="eager" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Aniog SLP.jpg" alt="SLPA Proof 2" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Aniog SLPA.jpg" alt="SLPA Proof 3" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Kilohan.jpg" alt="SLPA Proof 9" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Copra Stock.jpeg" alt="SLPA Proof 6" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Copra Haul.jpeg" alt="SLPA Proof 4" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Copra Hauling.jpg" alt="SLPA Proof 5" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Copra.jpg" alt="SLPA Proof 7" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Kokonut.jpeg" alt="SLPA Proof 10" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Logistics.jpeg" alt="SLPA Proof 11" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Mais Nakasako.jpeg" alt="SLPA Proof 8" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Mais Ninda.jpeg" alt="SLPA Proof 12" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Mais.jpeg" alt="SLPA Proof 13" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="SLPA Certification.jpg" alt="SLPA Proof 14" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="SLPA Map.jpg" alt="SLPA Proof 15" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                    </div>
+                </div>
+
+                <button class="gal-arrow" id="nextBtn" aria-label="Next">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+      
+        <div class="content-section table-container">
+            <table class="feature-table">
+                <thead>
+                    <tr>
+                        <th><b>Manage Your Products</b></th>
+                        <th><b>Work Anywhere</b></th>
+                        <th><b>Track Your Earnings</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Easily check and update your current stock of agricultural products, supplies and raw materials.</td>
+                        <td>Keep recording your sales even without an internet connection. The system will automatically update your records once you're back online.</td>
+                        <td>Clearly see your starting capital, everyday business expenses, cash flow analytics and total profits through dashboard.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <div class="card-box gallery-card-box">
+            <h3>Farmlands & Harvest Routes</h3>
+            <div class="gallery-wrapper">
+                <button class="gal-arrow" id="prevBtn2" aria-label="Previous">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            
+                <div class="gallery-viewport">
+                    <div class="gallery-slider" id="gallerySlider2">
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Coconut Grove.jpg" alt="Farmland 1" loading="eager" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Coconut Trees.jpg" alt="Farmland 2" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Cornfield.jpg" alt="Farmland 3" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Cornfields.jpg" alt="Farmland 4" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Sweet Potato Field.jpeg" alt="Farmland 5" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Farmers in Action.jpeg" alt="Farmland 6" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Ricefield.jpeg" alt="Farmland 7" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Ricefields.jpeg" alt="Farmland 8" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Ready to Harvest.jpg" alt="Farmland 9" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Corns and Coconuts.jpg" alt="Farmland 10" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Cassava Leaves.jpg" alt="Farmland 11" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Cassava and Corns.jpg" alt="Farmland 12" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Farm Slope.jpg" alt="Farmland 13" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Lumacao Pa More.jpg" alt="Farmland 14" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                        <div class="img-loading-wrapper"><div class="img-spinner"></div><img src="Lumacao.jpeg" alt="Farmland 15" loading="lazy" class="lazy-img" onclick="openImageModal(this.src)"></div>
+                    </div>
+                </div>
+
+                <button class="gal-arrow" id="nextBtn2" aria-label="Next">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+      
+        <div class="content-section" style="margin-bottom: 0;">
+            <p>Explore the farmlands, sloped fields, and primary harvest routes of Barangay Aniog. Here, members of Samahan ng Masisinop SLPA carefully grow fresh coconuts, grains, and root crops. We proudly honor these dedicated local farmers and sellers who power our community every day.</p>
+            <h3>Thank you for being part of us!</h3>
+        </div>
+
+        <!-- NEWS & ARTICLES START (SAMPLE CONTENT: replace each card's image, title, text, date and link with your real articles) -->
+        <div class="content-section news-section" id="newsSection">
+            <hr>
+            <h2>Latest News &amp; Articles</h2>
+
+            <div class="gallery news-grid">
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="SLPA Certification.jpg" alt="DSWD Certificate of Accreditation" class="lazy-img" loading="eager">
+                    </div>
+                    <h3 class="news-title">Samahan ng Masisinop SLPA receives DSWD accreditation</h3>
+                    <p class="news-excerpt">The DSWD Field Office V issued a Certificate of Accreditation recognizing Samahan ng Masisinop SLPA as a Beneficiary Civil Society Organization under the Sustainable Livelihood Program. The accreditation is valid for three years, until September 16, 2028.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2025-09-17"><i class="fa-regular fa-calendar"></i> Sep 17, 2025</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="Copra Hauling.jpg" alt="Copra being hauled" class="lazy-img" loading="lazy">
+                    </div>
+                    <h3 class="news-title">Copra hauling season gets underway in Aniog</h3>
+                    <p class="news-excerpt">Members of the association are preparing their copra for hauling. Sellers can record each load, track their remaining stock and see their income in USWAG, even without an internet connection while the trucks are on the road.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2026-10-15"><i class="fa-regular fa-calendar"></i> Oct 15, 2026</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="Farm Slope.jpg" alt="Farm slope in Aniog" class="lazy-img" loading="lazy">
+                    </div>
+                    <h3 class="news-title">Walking the farm slopes and harvest routes of Aniog</h3>
+                    <p class="news-excerpt">The sloped fields and harvest routes of Barangay Aniog carry coconuts, grains and root crops from the farm to the SLP center. Here is a look at the routes our farmers travel every harvest season.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2026-10-08"><i class="fa-regular fa-calendar"></i> Oct 8, 2026</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            </div>
+
+            <div class="gallery news-grid news-more" id="newsMore" hidden>
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="Aniog HQ.jpg" alt="SLP Center in Aniog" class="lazy-img" loading="lazy">
+                    </div>
+                    <h3 class="news-title">A look inside the SLP Center and its operations</h3>
+                    <p class="news-excerpt">The SLP Center is where products are weighed, stored and prepared for buyers. Learn how members of Samahan ng Masisinop work together to keep goods moving from the field to the market.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2026-09-30"><i class="fa-regular fa-calendar"></i> Sep 30, 2026</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="Cornfields.jpg" alt="Cornfields in Aniog" class="lazy-img" loading="lazy">
+                    </div>
+                    <h3 class="news-title">Corn and root crops ready for the market</h3>
+                    <p class="news-excerpt">Corn, cassava and sweet potatoes from our local sellers are now listed in the Product Gallery. Buyers from other barangays are welcome to register and message a seller directly.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2026-09-22"><i class="fa-regular fa-calendar"></i> Sep 22, 2026</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            <a href="about.html" class="card-box product-card-link news-card">
+                <div>
+                    <div class="img-loading-wrapper">
+                        <div class="img-spinner"></div>
+                        <img src="Logistics.jpeg" alt="Loading products for delivery" class="lazy-img" loading="lazy">
+                    </div>
+                    <h3 class="news-title">Recording sales anywhere with USWAG</h3>
+                    <p class="news-excerpt">Sellers can keep recording their sales while offline. The system saves them on the device and updates the records automatically once the internet connection is back.</p>
+                </div>
+                <div class="news-meta">
+                    <time class="news-date" datetime="2026-09-10"><i class="fa-regular fa-calendar"></i> Sep 10, 2026</time>
+                    <span class="btn-news-read">Read more</span>
+                </div>
+            </a>
+            </div>
+
+            <div class="news-footer">
+                <button type="button" class="news-toggle" id="newsToggle" aria-expanded="false" aria-controls="newsMore">
+                    <span>Read another article</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <a class="news-all-link" href="about.html">View all published articles</a>
+            </div>
+        </div>
+        <!-- NEWS & ARTICLES END -->
+
+    </div>
+</div>
+  
+<div id="welcomeAlertModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="success-icon-wrapper">
+            <i class="fa-solid fa-hands-holding-child"></i>
+        </div>
+        <h3 style="color: var(--primary-color);">Welcome to Samahan ng Masisinop Page!</h3>
+        <p style="text-align: center; margin: 15px 0;">This website is powered by USWAG (Unified System for Work and Growth). We are here to support our local farmers, micro-entrepreneurs, and the community of Barangay Aniog by bringing buyers and sellers together in one easy-to-use digital space.</p>
+        <button onclick="dismissModal()" class="btn-submit">Acknowledge</button>
+    </div>
+</div>
+
+<div id="imageLightboxModal" class="custom-modal-overlay" onclick="closeLightbox()">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <img class="lightbox-content" id="lightboxImage" alt="Enlarged SLPA Photo">
+</div>
+
+<footer>
+    <p>© 2026 USWAG (Unified System for Work and Growth).</p>
+</footer>
+
+</body>
+</html>
