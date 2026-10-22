@@ -6,7 +6,6 @@
     <title>Samahan ng Masisinop - Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -99,7 +98,7 @@
                         Your browser does not support the video tag.
                     </video>
             
-                    <button id="muteToggle" class="mute-btn" aria-label="Toggle Sound">
+                    <button type="button" id="muteToggle" class="mute-btn" aria-label="Turn sound on" aria-pressed="false">
                         <i class="fa-solid fa-volume-xmark"></i>
                     </button>
                 </div>
@@ -178,21 +177,6 @@
     </div>
 </div>
   
-<div id="successModal" class="custom-modal-overlay">
-    <div class="custom-modal-box">
-        <div class="success-icon-wrapper">
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Tada!</h3>
-        <p id="successMessage" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
-          Your account was created successfully. Welcome to Samahan ng Masisinop!</p>
-
-        <button type="button" onclick="closeSuccessModal()" class="btn-submit" style="background-color: var(--primary-color);">
-            Keep Browsing
-        </button>
-    </div>
-</div>
-
 <footer>
     <p>© 2026 USWAG (Unified System for Work and Growth).</p>
 </footer>

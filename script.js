@@ -52,9 +52,9 @@ function saveLastMessage(msg) {
 }
 
 const MESSAGE_STATUS_META = {
-    Review:   { cls: 'status-review',   icon: 'fa-clock' },
-    Received: { cls: 'status-received', icon: 'fa-circle-check' },
-    Rejected: { cls: 'status-rejected', icon: 'fa-circle-xmark' }
+    Review:   { cls: 'status-review',   icon: 'fa-clock',        lead: 'Your message is for' },
+    Received: { cls: 'status-received', icon: 'fa-circle-check', lead: 'Your message was' },
+    Rejected: { cls: 'status-rejected', icon: 'fa-circle-xmark', lead: 'Your message was' }
 };
 
 function closeEnvelopeModal() {
@@ -187,6 +187,23 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Sound button on the tutorial video. Browsers only autoplay muted video, so it starts muted and this turns sound on/off.
+    const muteToggle = document.getElementById('muteToggle');
+    if (tutorialVideo && muteToggle) {
+        const muteIcon = muteToggle.querySelector('i');
+        muteToggle.addEventListener('click', function() {
+            tutorialVideo.muted = !tutorialVideo.muted;
+            if (!tutorialVideo.muted && tutorialVideo.volume === 0) tutorialVideo.volume = 1;
+            if (tutorialVideo.paused) tutorialVideo.play().catch(function() { /* autoplay blocked: ignore */ });
+            if (muteIcon) {
+                muteIcon.classList.toggle('fa-volume-xmark', tutorialVideo.muted);
+                muteIcon.classList.toggle('fa-volume-high', !tutorialVideo.muted);
+            }
+            muteToggle.setAttribute('aria-pressed', String(!tutorialVideo.muted));
+            muteToggle.setAttribute('aria-label', tutorialVideo.muted ? 'Turn sound on' : 'Turn sound off');
+        });
+    }
+
     const formInputsAndTextareas = document.querySelectorAll('input, textarea');
     formInputsAndTextareas.forEach(el => {
         el.addEventListener('focus', function() {
@@ -295,51 +312,61 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const sentMessageCard = document.getElementById('sentMessageCard');
     const editMessageBtn = document.getElementById('editMessageBtn');
-    const viewMessageBtn = document.getElementById('viewMessageBtn');
+    const deleteMessageBtn = document.getElementById('deleteMessageBtn');
     const envelopeBtn = document.getElementById('envelopeBtn');
     const envelopeModal = document.getElementById('envelopeModal');
     const envelopeStage = document.getElementById('envelopeStage');
-    const envViewBtn = document.getElementById('envViewBtn');
+    const envelopeToggle = document.getElementById('envelopeToggle');
+    const letterReader = document.getElementById('letterReader');
+    const letterFold = document.getElementById('letterFold');
+    const envHint = document.getElementById('envHint');
     const envEditBtn = document.getElementById('envEditBtn');
+    const envDeleteBtn = document.getElementById('envDeleteBtn');
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+    const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+    const sendButtonDefaultHTML = sendMessageBtn ? sendMessageBtn.innerHTML : '';
 
     let lastMessage = loadLastMessage();
     let isSending = false;
 
+    // Badge = icon + word. The card hides the word on phones (CSS), so the label is also kept in title / aria-label.
     function paintStatus(badgeEl, status) {
         if (!badgeEl) return;
-        const meta = MESSAGE_STATUS_META[status] || MESSAGE_STATUS_META.Review;
-        const label = MESSAGE_STATUS_META[status] ? status : 'Review';
+        const key = MESSAGE_STATUS_META[status] ? status : 'Review';
+        const meta = MESSAGE_STATUS_META[key];
+        const fullText = meta.lead + ' ' + key.toLowerCase();
         badgeEl.className = 'status-badge ' + meta.cls;
-        badgeEl.innerHTML = '<i class="fa-solid ' + meta.icon + '"></i> ' + label;
+        badgeEl.innerHTML = '<i class="fa-solid ' + meta.icon + '"></i> <span class="status-text">' + key + '</span>';
+        badgeEl.setAttribute('role', 'img');
+        badgeEl.setAttribute('aria-label', fullText);
+        badgeEl.title = fullText;
     }
 
     function applyStatus(status) {
-        paintStatus(document.getElementById('messageStatusBadge'), status);
-        paintStatus(document.getElementById('envStatusBadge'), status);
+        const key = MESSAGE_STATUS_META[status] ? status : 'Review';
+        paintStatus(document.getElementById('messageStatusBadge'), key);
+        paintStatus(document.getElementById('envStatusBadge'), key);
+        document.querySelectorAll('.status-lead').forEach(function (el) { el.textContent = MESSAGE_STATUS_META[key].lead; });
     }
 
     function showStatusCard() {
         if (!sentMessageCard) return;
-        sentMessageCard.style.display = 'flex';
+        sentMessageCard.style.display = 'grid';
         if (window.innerWidth < 992) sentMessageCard.classList.add('mobile-active');
     }
 
-    // Envelope pop-up: opens centered like the Tada modal, envelope closed until "View Message"
+    // Envelope pop-up: the closed envelope shows first. Tapping it opens the flap and swaps it for the letter.
+    // Tapping the folded corner of the letter puts the letter back and brings the envelope back.
     function setLetterOpen(open) {
         if (!envelopeStage) return;
         envelopeStage.classList.toggle('is-open', open);
-        envelopeStage.classList.remove('is-opening');
-        if (open) {
-            void envelopeStage.offsetWidth;
-            envelopeStage.classList.add('is-opening');
-        }
-        if (envViewBtn) {
-            const label = envViewBtn.querySelector('span');
-            if (label) label.textContent = open ? 'Hide Message' : 'View Message';
-        }
+        envelopeStage.inert = open;                    // the hidden side cannot be tabbed to or tapped
+        if (letterReader) letterReader.inert = !open;
+        if (envHint) envHint.textContent = open ? 'Tap the corner to close' : 'Tap the envelope to open';
     }
 
-    function openEnvelopeModal(openLetter) {
+    function openEnvelopeModal() {
         if (!envelopeModal || !lastMessage) return;
         document.getElementById('envSubject').textContent = 'Subject: ' + (lastMessage.subject || '');
         document.getElementById('envMessageText').textContent = lastMessage.text || '';
@@ -349,12 +376,7 @@ document.addEventListener("DOMContentLoaded", function() {
         updateEnvelopeDot();
         setLetterOpen(false);
         envelopeModal.style.display = 'flex';
-        if (openLetter) setTimeout(() => setLetterOpen(true), 350);
         refreshStatus();
-    }
-
-    function toggleLetter() {
-        setLetterOpen(!(envelopeStage && envelopeStage.classList.contains('is-open')));
     }
 
     // Edit & Resend: back to the form with the message ready to change
@@ -379,6 +401,43 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Delete: always asks first, then removes the message card and forgets the message
+    function openDeleteConfirm() {
+        if (!deleteConfirmModal || !lastMessage) return;
+        deleteConfirmModal.style.display = 'flex';
+        if (deleteCancelBtn) deleteCancelBtn.focus();
+    }
+
+    function closeDeleteConfirm() {
+        if (deleteConfirmModal) deleteConfirmModal.style.display = 'none';
+    }
+
+    async function deleteMessage() {
+        const doomed = lastMessage;
+        closeDeleteConfirm();
+        closeEnvelopeModal();
+
+        lastMessage = null;
+        try { localStorage.removeItem(LAST_MESSAGE_KEY); } catch (err) { /* storage blocked: ignore */ }
+        if (sentMessageCard) {
+            sentMessageCard.style.display = 'none';
+            sentMessageCard.classList.remove('mobile-active');
+        }
+        updateEnvelopeDot();
+        if (sendMessageBtn) {
+            sendMessageBtn.style.backgroundColor = '';
+            sendMessageBtn.style.color = '';
+            sendMessageBtn.innerHTML = sendButtonDefaultHTML;
+        }
+
+        // Also ask the server to delete the saved row. Needs a "delete" action in process_contact.php (checks id + token).
+        if (doomed && !doomed.simulated && doomed.id && doomed.token) {
+            try {
+                await postJSON('process_contact.php', { action: 'delete', message_id: doomed.id, token: doomed.token });
+            } catch (err) { /* offline: the message is already gone from this browser */ }
+        }
+    }
+
     // Ask the server whether the SLP Admin has marked the message Received or Rejected
     async function refreshStatus() {
         if (!lastMessage || lastMessage.simulated || !lastMessage.id || !lastMessage.token) return;
@@ -387,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 action: 'status', message_id: lastMessage.id, token: lastMessage.token
             });
             const newStatus = res.data && res.data.message_status;
-            if (res.ok && MESSAGE_STATUS_META[newStatus] && newStatus !== lastMessage.status) {
+            if (lastMessage && res.ok && MESSAGE_STATUS_META[newStatus] && newStatus !== lastMessage.status) {
                 lastMessage.status = newStatus;
                 lastMessage.seen = !!(envelopeModal && envelopeModal.style.display === 'flex');
                 saveLastMessage(lastMessage);
@@ -404,19 +463,29 @@ document.addEventListener("DOMContentLoaded", function() {
         envelopeBtn.classList.toggle('has-update', unseen);
     }
 
-    // Folded corner of the letter: tap it to put the letter back into the envelope
-    const letterFold = document.getElementById('letterFold');
-    if (letterFold) letterFold.addEventListener('click', () => setLetterOpen(false));
+    setLetterOpen(false);
 
-    if (envelopeBtn) envelopeBtn.addEventListener('click', () => openEnvelopeModal(false));
-    if (viewMessageBtn) viewMessageBtn.addEventListener('click', () => openEnvelopeModal(true));
-    if (envViewBtn) envViewBtn.addEventListener('click', toggleLetter);
+    // The envelope icon and the "View message" words are one button: either one opens the pop-up
+    if (envelopeBtn) envelopeBtn.addEventListener('click', openEnvelopeModal);
+    if (envelopeToggle) envelopeToggle.addEventListener('click', () => setLetterOpen(true));
+    if (letterFold) letterFold.addEventListener('click', () => setLetterOpen(false));
     if (envEditBtn) envEditBtn.addEventListener('click', editAndResend);
     if (editMessageBtn) editMessageBtn.addEventListener('click', editAndResend);
+    if (envDeleteBtn) envDeleteBtn.addEventListener('click', openDeleteConfirm);
+    if (deleteMessageBtn) deleteMessageBtn.addEventListener('click', openDeleteConfirm);
+    if (deleteCancelBtn) deleteCancelBtn.addEventListener('click', closeDeleteConfirm);
+    if (deleteConfirmBtn) deleteConfirmBtn.addEventListener('click', deleteMessage);
     if (envelopeModal) {
         envelopeModal.addEventListener('click', function(e) { if (e.target === envelopeModal) closeEnvelopeModal(); });
     }
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeEnvelopeModal(); });
+    if (deleteConfirmModal) {
+        deleteConfirmModal.addEventListener('click', function(e) { if (e.target === deleteConfirmModal) closeDeleteConfirm(); });
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        if (deleteConfirmModal && deleteConfirmModal.style.display === 'flex') closeDeleteConfirm();
+        else closeEnvelopeModal();
+    });
 
     // Bring back the status card after a refresh, then keep it fresh while the status is still "Review"
     if (sentMessageCard && lastMessage && (lastMessage.id || lastMessage.simulated)) {
@@ -740,6 +809,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const termsCheckbox = document.getElementById('termsCheckbox');
     const submitBtn = document.getElementById('submitBtn');
     let isSubmitting = false;
+    let redirecting = false;
+    const THANK_YOU_PAGE = 'thankyou.html';
 
     if (openTncLink && tncModal) {
         openTncLink.addEventListener('click', function(e) {
@@ -814,19 +885,30 @@ document.addEventListener("DOMContentLoaded", function() {
             { const sim = getSim(); if (sim) sim.onRegistered({ username: username, address: address, phone: contact, role: role }, res); }
             // SIMULATION HOOK END
 
-            const successModal = document.getElementById('successModal');
-            if (successModal) {
-                successModal.style.display = 'flex';
-                setTimeout(triggerConfettiBurst, 100);
-            }
+            // No pop-up: thankyou.html does the celebrating. The button stays on "Creating account..." until the page changes.
+            redirecting = true;
+            window.location.href = THANK_YOU_PAGE;
         } catch (err) {
             showWarning("Cannot reach the server. Check your internet connection and try again.");
         } finally {
-            isSubmitting = false;
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = buttonBefore;
+            if (!redirecting) {
+                isSubmitting = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = buttonBefore;
+                }
             }
+        }
+    });
+
+    // Coming back with the browser's Back button should not leave the button stuck on "Creating account..."
+    window.addEventListener('pageshow', function(e) {
+        if (!e.persisted) return;
+        redirecting = false;
+        isSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Submit Registration';
         }
     });
 });
@@ -1005,15 +1087,14 @@ document.addEventListener("DOMContentLoaded", function() {
 // ===================================================================================
 // SIMULATION START
 // Demo helpers: prints the "SMS / email" notification previews in the browser console, shows the success
-// pop-up even when no PHP server is reachable (static hosting / offline), and sends a new member to
-// thankyou.html after registering.
+// pop-up even when no PHP server is reachable (static hosting / offline).
 //
 // SAFE TO REMOVE: delete everything from "SIMULATION START" to "SIMULATION END". The rest of this file only
 // uses it through getSim(), which returns null when this block is gone, so nothing else is affected.
 // To switch it off without deleting it, set  enabled: false  below.
 // ===================================================================================
 (function () {
-    const SIM = { enabled: true, thankYouPage: 'thankyou.html' };
+    const SIM = { enabled: true };
 
     // The original dispatch message (console preview of the SMS and the email the sender receives)
     function dispatchContactNotification(contactData) {
@@ -1073,14 +1154,6 @@ document.addEventListener("DOMContentLoaded", function() {
         onRegistered: function (info, res) {
             console.log('[SIMULATION] Registration preview' + (res && res.data && res.data.simulated ? ' (server not reached)' : ''));
             dispatchRegisterNotification(info);
-
-            // After the success pop-up, continue to the thank-you page
-            const successModal = document.getElementById('successModal');
-            const button = successModal ? successModal.querySelector('.btn-submit') : null;
-            if (button) {
-                button.textContent = 'Continue';
-                button.addEventListener('click', function () { window.location.href = SIM.thankYouPage; }, { once: true });
-            }
         }
     };
 })();

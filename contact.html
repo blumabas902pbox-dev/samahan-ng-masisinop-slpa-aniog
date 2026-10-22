@@ -142,44 +142,41 @@
         </aside>
 
         <div id="sentMessageCard" class="sent-message-popup-card">
-            <button type="button" id="envelopeBtn" class="envelope-trigger" title="Open your message" aria-label="Open your message">
-                <i class="fa-solid fa-envelope"></i>
+            <button type="button" id="envelopeBtn" class="envelope-trigger" aria-label="View message">
+                <span class="envelope-trigger-icon"><i class="fa-solid fa-envelope"></i></span>
+                <span class="btn-label">View message</span>
             </button>
-            <div class="sent-message-body">
-                <div class="sent-message-header">
-                    <span class="status-line">This message is for</span>
-                    <span id="messageStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> Review</span>
-                </div>
-                <div class="sent-message-actions">
-                    <button type="button" id="viewMessageBtn" class="btn-view-message">
-                        <i class="fa-solid fa-envelope-open-text"></i> View Message
-                    </button>
-                    <button type="button" id="editMessageBtn" class="btn-edit-message">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit &amp; Resend
-                    </button>
-                </div>
+            <div class="sent-message-header">
+                <span class="status-lead">Your message is for</span>
+                <span id="messageStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> <span class="status-text">Review</span></span>
+            </div>
+            <div class="sent-message-actions">
+                <button type="button" id="editMessageBtn" class="btn-edit-message" aria-label="Edit and resend" title="Edit &amp; Resend">
+                    <i class="fa-solid fa-pen-to-square"></i> <span class="btn-label">Edit &amp; Resend</span>
+                </button>
+                <button type="button" id="deleteMessageBtn" class="btn-delete-message" aria-label="Delete message" title="Delete">
+                    <i class="fa-solid fa-trash-can"></i> <span class="btn-label">Delete</span>
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="envelopeModal" class="custom-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="envelopeTitle">
+<div id="envelopeModal" class="custom-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="envelopeStatusLine">
     <div class="custom-modal-box envelope-modal-box">
         <button type="button" class="envelope-close" onclick="closeEnvelopeModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 
         <div id="envelopeStage" class="envelope-stage">
-            <div class="envelope">
-                <div class="env-back"></div>
-                <div class="env-letter"><span></span><span></span><span></span><span></span></div>
-                <div class="env-front"></div>
-                <div class="env-flap"></div>
+            <div class="envelope-stage-clip">
+                <div class="envelope-stage-pad">
+                    <button type="button" id="envelopeToggle" class="envelope" aria-label="Open your message">
+                        <span class="env-back"></span>
+                        <span class="env-letter"><span></span><span></span><span></span><span></span></span>
+                        <span class="env-front"></span>
+                        <span class="env-flap"></span>
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <h3 id="envelopeTitle" class="envelope-title">Your Message</h3>
-        <div class="envelope-status">
-            <span>This message is for</span>
-            <span id="envStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> Review</span>
         </div>
 
         <div id="letterReader" class="letter-reader">
@@ -187,16 +184,38 @@
             <div class="letter-scroll">
                 <p id="envSubject" class="letter-subject"></p>
                 <p id="envMessageText" class="letter-text"></p>
-                <p class="letter-hint">Tap the folded corner to put the letter back in the envelope.</p>
             </div>
         </div>
 
+        <p id="envHint" class="env-hint">Tap the envelope to open</p>
+
+        <div id="envelopeStatusLine" class="envelope-status">
+            <span class="status-lead">Your message is for</span>
+            <span id="envStatusBadge" class="status-badge status-review"><i class="fa-solid fa-clock"></i> <span class="status-text">Review</span></span>
+        </div>
+
         <div class="envelope-actions">
-            <button type="button" id="envViewBtn" class="btn-submit" style="background-color: var(--primary-color);">
-                <i class="fa-solid fa-envelope-open-text"></i> <span>View Message</span>
-            </button>
             <button type="button" id="envEditBtn" class="btn-submit">
                 <i class="fa-solid fa-pen-to-square"></i> Edit &amp; Resend
+            </button>
+            <button type="button" id="envDeleteBtn" class="btn-submit btn-danger">
+                <i class="fa-solid fa-trash-can"></i> Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="deleteConfirmModal" class="custom-modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="deleteConfirmTitle" aria-describedby="deleteConfirmText">
+    <div class="custom-modal-box">
+        <div class="delete-confirm-icon"><i class="fa-solid fa-trash-can"></i></div>
+        <h3 id="deleteConfirmTitle" style="color: var(--accent-color); margin-bottom: 10px;">Delete your message?</h3>
+        <p id="deleteConfirmText" style="margin-bottom: 20px; font-size: 0.95rem; text-align: center; line-height: 1.5;">
+            Are you sure you want to delete your message? This can’t be undone.
+        </p>
+        <div class="confirm-actions">
+            <button type="button" id="deleteCancelBtn" class="btn-submit">Cancel</button>
+            <button type="button" id="deleteConfirmBtn" class="btn-submit btn-danger">
+                <i class="fa-solid fa-trash-can"></i> Yes, delete
             </button>
         </div>
     </div>

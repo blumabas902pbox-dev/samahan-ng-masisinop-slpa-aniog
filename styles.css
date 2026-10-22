@@ -1254,46 +1254,75 @@ hr.section-divider {
     display: none;
 }
 
-/* ===== Message status card (compact row; envelope button on the left) ===== */
+/* ===== Message status card: [big envelope + "View message"] / status / Edit above Delete =====
+   Desktop = icon + words. Phones (600px and under) = icons only. */
 .sent-message-popup-card {
-    display: none;
-    flex-direction: row;
+    display: none;                       /* script.js shows it as a grid */
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "view"
+        "status"
+        "actions";
+    row-gap: 14px;
     align-items: center;
-    gap: 14px;
+    justify-items: start;
 }
 
 .envelope-trigger {
-    flex: 0 0 auto;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    grid-area: view;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 12px 0 0;
     border: none;
+    border-radius: 44px;
+    background: none;
     cursor: pointer;
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.envelope-trigger-icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(209, 153, 20, 0.14);
+    background-color: rgba(209, 153, 20, 0.16);
     color: var(--pressed-color);
-    font-size: 1.35rem;
+    font-size: 2.3rem;
     transition: transform 0.15s ease, background-color 0.2s ease;
 }
 
-.envelope-trigger:hover {
-    background-color: rgba(209, 153, 20, 0.26);
+.envelope-trigger:hover .envelope-trigger-icon {
+    background-color: rgba(209, 153, 20, 0.28);
 }
 
-.envelope-trigger:active {
+.envelope-trigger:hover .btn-label {
+    text-decoration: underline;
+}
+
+.envelope-trigger:active .envelope-trigger-icon {
     transform: scale(0.92);
 }
 
 .envelope-trigger:focus-visible,
-.btn-view-message:focus-visible,
-.btn-edit-message:focus-visible {
+.btn-edit-message:focus-visible,
+.btn-delete-message:focus-visible,
+.envelope:focus-visible {
     outline: 2px solid var(--secondary-color) !important;
-    outline-offset: 2px;
+    outline-offset: 3px;
 }
 
-.envelope-trigger i {
+.envelope-trigger-icon i {
     animation: envelopeNudge 2.4s ease-in-out infinite;
 }
 
@@ -1304,19 +1333,17 @@ hr.section-divider {
     95% { transform: rotate(-5deg); }
 }
 
-.sent-message-body {
-    flex: 1 1 auto;
-    min-width: 0;
-}
-
 .sent-message-popup-card .sent-message-header {
+    grid-area: status;
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
-    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin: 0;
 }
 
-.status-line {
+.status-lead {
     font-size: 0.9rem;
     font-weight: 600;
     color: #444444;
@@ -1333,16 +1360,19 @@ hr.section-divider {
 }
 
 .sent-message-actions {
+    grid-area: actions;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;              /* Edit on top, Delete under it */
+    align-items: stretch;
     gap: 8px;
+    width: min(100%, 210px);
 }
 
-.btn-view-message {
-    background-color: var(--primary-color);
+.btn-edit-message,
+.btn-delete-message {
     color: #FFFFFF;
     border: none !important;
-    padding: 8px 16px;
+    padding: 9px 16px;
     border-radius: 6px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -1350,17 +1380,35 @@ hr.section-divider {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     transition: background-color 0.2s ease;
 }
 
-.btn-view-message:hover {
+.btn-edit-message {
     background-color: var(--secondary-color);
 }
 
-.btn-view-message:active,
+.btn-edit-message:hover {
+    background-color: var(--primary-color);
+}
+
+.btn-delete-message,
+.btn-danger {
+    background-color: var(--accent-color);
+}
+
+.btn-delete-message:hover,
+.btn-danger:hover {
+    background-color: #A81212;
+}
+
 .btn-edit-message:active {
     background-color: var(--pressed-color);
+}
+
+.btn-delete-message:active,
+.btn-danger:active {
+    background-color: #7F0D0D;
 }
 
 /* ===== Envelope pop-up (same centered pop-in as the "Tada!" modal) ===== */
@@ -1375,6 +1423,7 @@ hr.section-divider {
     position: absolute;
     top: 10px;
     right: 12px;
+    z-index: 5;
     width: 32px;
     height: 32px;
     border: none;
@@ -1394,19 +1443,44 @@ hr.section-divider {
     color: #FFFFFF;
 }
 
+/* The closed envelope. Opening it: flap lifts, the letter rises, then the whole envelope folds away and the paper takes its place.
+   Closing is the reverse and starts at once (the delays below belong to the opening only). */
 .envelope-stage {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition: grid-template-rows 0.3s ease, opacity 0.2s ease;
+}
+
+.envelope-stage-clip {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.envelope-stage-pad {
     perspective: 800px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding-top: 70px;               /* room for the letter to rise above the envelope */
-    margin-bottom: 14px;
+    padding: 70px 24px 28px;             /* room for the letter to rise and for the shadow */
+}
+
+.envelope-stage.is-open {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.3s ease 0.5s, opacity 0.25s ease 0.5s;
 }
 
 .envelope {
     position: relative;
+    display: block;
     width: 210px;
     height: 136px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .env-back {
@@ -1431,7 +1505,7 @@ hr.section-divider {
     display: flex;
     flex-direction: column;
     gap: 7px;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.35s;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.12s;
 }
 
 .env-letter span {
@@ -1465,7 +1539,13 @@ hr.section-divider {
     transform-origin: top center;
     transform: perspective(700px) rotateX(0deg);
     z-index: 4;
-    transition: transform 0.5s ease-in-out, z-index 0s linear 0.25s;
+    transition: transform 0.35s ease-in-out, z-index 0s linear 0.18s;
+}
+
+/* a small lift of the tip invites the tap */
+.envelope-stage:not(.is-open) .envelope:hover .env-flap,
+.envelope-stage:not(.is-open) .envelope:focus-visible .env-flap {
+    transform: perspective(700px) rotateX(18deg);
 }
 
 .envelope-stage.is-open .env-flap {
@@ -1478,31 +1558,19 @@ hr.section-divider {
     transform: translateY(-62px);
 }
 
-.envelope-stage.is-opening .envelope {
-    animation: envelopeWobble 0.45s ease-in-out;
-}
-
-@keyframes envelopeWobble {
-    0%, 100% { transform: rotate(0deg); }
-    30% { transform: rotate(-3deg); }
-    70% { transform: rotate(3deg); }
-}
-
-.envelope-title {
-    color: var(--primary-color);
-    margin-bottom: 6px;
-}
-
 .envelope-status {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #444444;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+}
+
+.env-hint {
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    color: #8A8A8A;
 }
 
 .letter-reader {
@@ -1515,13 +1583,15 @@ hr.section-divider {
     border-radius: 8px;
     /* top-right corner is cut away: the folded tip sits there */
     clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%);
-    transition: max-height 0.5s ease 0.55s, opacity 0.4s ease 0.55s, margin 0.3s ease;
+    transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.2s ease;
 }
 
 .envelope-stage.is-open ~ .letter-reader {
     max-height: 290px;
     opacity: 1;
-    margin-bottom: 16px;
+    margin-top: 42px;                    /* keeps the folded corner clear of the close button */
+    margin-bottom: 10px;
+    transition: max-height 0.4s ease 0.6s, opacity 0.35s ease 0.6s, margin 0.3s ease 0.6s;
 }
 
 .letter-scroll {
@@ -1558,14 +1628,6 @@ hr.section-divider {
     outline-offset: 2px;
 }
 
-.letter-hint {
-    margin: 0;
-    padding: 0 16px 12px;
-    font-size: 0.72rem;
-    font-style: italic;
-    color: #8A8A8A;
-}
-
 .letter-subject {
     margin: 0;
     padding: 12px 44px 4px 16px;
@@ -1586,41 +1648,98 @@ hr.section-divider {
 
 .envelope-actions {
     display: flex;
+    flex-direction: column;              /* Edit on top, Delete under it */
     gap: 10px;
 }
 
 .envelope-actions .btn-submit {
-    flex: 1 1 0;
-    padding: 11px 10px;
-    font-size: 0.9rem;
+    padding: 12px 10px;
+    font-size: 0.95rem;
 }
 
-@media (max-width: 480px) {
-    .envelope-actions {
-        flex-direction: column;
+/* ===== "Delete your message?" confirmation ===== */
+.delete-confirm-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.confirm-actions .btn-submit {
+    flex: 1 1 0;
+    padding: 11px 10px;
+    font-size: 0.95rem;
+}
+
+/* ===== Phones: the status card shows icons only (labels stay in title / aria-label) ===== */
+@media (max-width: 600px) {
+    .sent-message-popup-card {
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "view status"
+            "view actions";
+        column-gap: 14px;
+        row-gap: 10px;
+        padding: 14px;
     }
 
-    .sent-message-popup-card {
-        padding: 14px;
-        gap: 10px;
+    .sent-message-popup-card .btn-label,
+    .sent-message-popup-card .status-text,
+    .sent-message-popup-card .status-lead {
+        display: none;
     }
 
     .envelope-trigger {
+        padding: 0;
+    }
+
+    .envelope-trigger-icon {
+        width: 68px;
+        height: 68px;
+        font-size: 2rem;
+    }
+
+    .sent-message-popup-card .status-badge {
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+
+    .sent-message-actions {
+        width: auto;
+        align-items: flex-start;
+    }
+
+    .btn-edit-message,
+    .btn-delete-message {
         width: 44px;
         height: 44px;
-        font-size: 1.2rem;
+        padding: 0;
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .envelope-stage-pad {
+        padding-left: 12px;
+        padding-right: 12px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .envelope-trigger i,
-    .envelope-stage.is-opening .envelope {
+    .envelope-trigger-icon i {
         animation: none;
     }
 
+    .envelope-stage,
+    .envelope-stage.is-open,
     .env-flap,
     .env-letter,
-    .letter-reader {
+    .letter-reader,
+    .envelope-stage.is-open ~ .letter-reader {
         transition-duration: 0.01s;
         transition-delay: 0s;
     }
@@ -1628,15 +1747,11 @@ hr.section-divider {
 
 
 /* ===== Notification dot on the envelope (the SLP Admin answered and you have not opened it yet) ===== */
-.envelope-trigger {
-    position: relative;
-}
-
-.envelope-trigger.has-update::after {
+.envelope-trigger.has-update .envelope-trigger-icon::after {
     content: "";
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 8px;
+    right: 8px;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -1845,7 +1960,7 @@ hr.section-divider {
     .news-grid.news-more,
     .lightbox-content.lb-from-right,
     .lightbox-content.lb-from-left,
-    .envelope-trigger.has-update::after {
+    .envelope-trigger.has-update .envelope-trigger-icon::after {
         animation: none;
     }
 }
