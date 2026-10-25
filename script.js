@@ -913,19 +913,54 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Ad slot: hide the "Ad space" placeholder as soon as an ad network puts something real inside the slot
+// ===================================================================================
+// AD SPACE (contact.html, between the map and the message status)
+//   The "Ad space" box keeps the room reserved so the page never jumps. It disappears only when a real ad fills it.
+//   GOOGLE ADSENSE: after Google approves the site, fill in the two values below. Nothing else needs to change:
+//     ADSENSE_CLIENT = your publisher id  (AdSense > Account > Account information, looks like 'ca-pub-1234567890123456')
+//     ADSENSE_SLOT   = the ad unit id     (AdSense > Ads > By ad unit, a 10-digit number)
+//   Also publish /ads.txt at the site root (template included). Leave both values empty while testing: no request is made.
+//   Note: a visitor's ad blocker (Brave Shields, uBlock...) hides the ad itself on that visitor's own screen only.
+// ===================================================================================
+const ADSENSE_CLIENT = '';
+const ADSENSE_SLOT = '';
+
 document.addEventListener("DOMContentLoaded", function() {
-    const adSlot = document.getElementById('adSlot');
-    const adSlotContent = document.getElementById('adSlotContent');
+    const adSlot = document.getElementById('sponsorSlot');
+    const adSlotContent = document.getElementById('sponsorSlotContent');
     if (!adSlot || !adSlotContent) return;
 
     function checkForAd() {
-        const hasAd = adSlotContent.children.length > 0 && adSlotContent.getBoundingClientRect().height > 20;
-        adSlot.classList.toggle('has-ad', hasAd);
+        const unit = adSlotContent.querySelector('ins.adsbygoogle');
+        const filled = !!unit && unit.getAttribute('data-ad-status') === 'filled';
+        const hasContent = adSlotContent.children.length > 0 && adSlotContent.getBoundingClientRect().height > 20;
+        adSlot.classList.toggle('has-ad', unit ? filled : hasContent);
+    }
+
+    function mountAdSense() {
+        if (!ADSENSE_CLIENT || !ADSENSE_SLOT) return;
+        const loader = document.createElement('script');
+        loader.async = true;
+        loader.crossOrigin = 'anonymous';
+        loader.setAttribute('data-cfasync', 'false');   // Cloudflare Rocket Loader must not delay the ad script
+        loader.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADSENSE_CLIENT);
+        document.head.appendChild(loader);
+
+        const unit = document.createElement('ins');
+        unit.className = 'adsbygoogle';
+        unit.style.display = 'block';
+        unit.style.width = '100%';
+        unit.setAttribute('data-ad-client', ADSENSE_CLIENT);
+        unit.setAttribute('data-ad-slot', ADSENSE_SLOT);
+        unit.setAttribute('data-ad-format', 'auto');
+        unit.setAttribute('data-full-width-responsive', 'true');
+        adSlotContent.appendChild(unit);
+        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (err) { /* blocked or not approved yet: the placeholder stays */ }
     }
 
     new MutationObserver(checkForAd).observe(adSlotContent, { childList: true, subtree: true, attributes: true });
     window.addEventListener('load', function() { setTimeout(checkForAd, 1500); });
+    mountAdSense();
 });
 
 
@@ -1159,4 +1194,235 @@ document.addEventListener("DOMContentLoaded", function() {
 })();
 // ===================================================================================
 // SIMULATION END
+// ===================================================================================
+
+
+// ===================================================================================
+// AUTH SIMULATION START (JS)
+// Quick sign-up on register.html: Continue with Google / Facebook / SMS.
+// It BYPASSES real authentication on purpose (for now): nothing is sent to Google, Facebook or an SMS company,
+// no account is created and nothing is saved. Each path ends the same way: a loading spinner, then the Home page.
+// The real registration form on the same page is untouched.
+//
+// SAFE TO REMOVE: delete everything from "AUTH SIMULATION START (JS)" to "AUTH SIMULATION END (JS)".
+// Nothing else in this file refers to it. If the HTML block was already deleted this code does nothing.
+// To switch it off without deleting it, set  enabled: false  in CFG below.
+//
+// WHEN YOU MAKE IT REAL (your Cloudflare Worker + D1):
+//   Google    -> Google Identity Services returns an ID token; POST it to the Worker and verify it there.
+//   Facebook  -> Facebook Login returns an access token; POST it to the Worker and verify it with Graph API /debug_token.
+//   SMS       -> Worker makes a 6-digit code, stores only its hash + expiry + tries in D1, texts it (Semaphore OTP API).
+//   Human check -> replace the .cf-widget markup with the real Cloudflare Turnstile widget and verify its token in the Worker.
+//   In all three, replace the body of finishSignIn() below with the real request, then redirect on success.
+// ===================================================================================
+(function () {
+    'use strict';
+
+    const CFG = {
+        enabled: true,
+        homePage: 'index.html',   // where every path lands after the spinner
+        humanCheckMs: 1400,       // how long the "Verifying..." state shows once the page loads
+        signInMs: 1800,           // how long the "Signing you in..." spinner shows
+        otpResendSec: 120,        // "Resend in 2:00"
+        otpAutofillMs: 1200       // the demo code is "received" and filled in after this delay
+    };
+
+    const $ = function (id) { return document.getElementById(id); };
+    const sleep = function (ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); };
+
+    function ready(fn) {
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+        else fn();
+    }
+
+    ready(function () {
+        const wrap = $('authSim');
+        const modal = $('authSimModal');
+        const box = $('authSimBox');
+        if (!wrap || !modal || !box || !CFG.enabled) return;
+
+        // ---------- Human check (Cloudflare-style "Success!") ----------
+        const human = $('humanCheck');
+        const humanText = $('humanText');
+        const humanReady = (function () {
+            if (!human) return Promise.resolve();
+            return sleep(CFG.humanCheckMs).then(function () {
+                human.classList.remove('is-checking');
+                human.classList.add('is-success');
+                if (humanText) humanText.textContent = 'Success!';
+            });
+        })();
+
+        // ---------- Pop-up state ----------
+        const steps = Array.from(box.querySelectorAll('.authsim-step'));
+        let runId = 0;            // bumps whenever the pop-up closes, so a late timer cannot redirect
+        let resendTimer = null;
+        let autofillTimer = null;
+        let phone = '';
+        let lastFocus = null;
+
+        function showStep(name) {
+            steps.forEach(function (s) { s.hidden = s.getAttribute('data-step') !== name; });
+            const demo = $('authSimDemo');
+            if (demo) demo.hidden = (name === 'busy');
+            const current = steps.find(function (s) { return !s.hidden; });
+            const focusTarget = current && current.querySelector('input, .authsim-account, .authsim-primary');
+            if (focusTarget && name !== 'busy') setTimeout(function () { try { focusTarget.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }, 60);
+        }
+
+        function stopTimers() {
+            clearInterval(resendTimer); resendTimer = null;
+            clearTimeout(autofillTimer); autofillTimer = null;
+        }
+
+        function open(provider) {
+            lastFocus = document.activeElement;
+            runId++;
+            box.setAttribute('data-provider', provider);
+            showStep(provider === 'sms' ? 'phone' : provider);
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+            runId++;
+            stopTimers();
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            if (lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+        }
+
+        // The "sign in for real" step. For now it only waits, then goes Home.
+        async function finishSignIn(label) {
+            const myRun = ++runId;
+            stopTimers();
+            const text = $('authSimBusyText');
+            if (text) text.textContent = 'Signing you in...';
+            showStep('busy');
+            await humanReady;                 // the human check must have passed first
+            await sleep(CFG.signInMs);
+            if (myRun !== runId) return;      // the person closed the pop-up meanwhile
+            if (text) text.textContent = 'Welcome to Samahan ng Masisinop!';
+            await sleep(450);
+            if (myRun !== runId) return;
+            window.location.href = CFG.homePage;
+        }
+
+        // ---------- SMS: number -> One-Time PIN ----------
+        function digitsOnly(input) {
+            if (!input) return;
+            input.addEventListener('input', function () {
+                const clean = input.value.replace(/\D/g, '');
+                if (clean !== input.value) input.value = clean;
+            });
+        }
+
+        function maskPhone(p) { return p.slice(0, 2) + '*******' + p.slice(-2); }
+
+        function formatClock(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+
+        function startResendClock() {
+            const btn = $('authSimResend');
+            let left = CFG.otpResendSec;
+            clearInterval(resendTimer);
+            btn.disabled = true;
+            btn.textContent = 'Resend in ' + formatClock(left);
+            resendTimer = setInterval(function () {
+                left -= 1;
+                if (left <= 0) {
+                    clearInterval(resendTimer);
+                    resendTimer = null;
+                    btn.disabled = false;
+                    btn.textContent = 'Resend code';
+                } else {
+                    btn.textContent = 'Resend in ' + formatClock(left);
+                }
+            }, 1000);
+        }
+
+        function updateVerify() {
+            const input = $('authSimOtp');
+            $('authSimVerifyBtn').disabled = input.value.length !== 6;
+        }
+
+        function sendCode() {
+            const input = $('authSimOtp');
+            input.value = '';
+            input.classList.remove('is-autofilled');
+            updateVerify();
+            $('authSimOtpTo').textContent = maskPhone(phone);
+            showStep('otp');
+            startResendClock();
+            clearTimeout(autofillTimer);
+            const myRun = runId;
+            // Demo only: the "text message" arrives and the code fills itself in, like Android's SMS autofill.
+            autofillTimer = setTimeout(function () {
+                if (myRun !== runId) return;
+                input.value = String(Math.floor(100000 + Math.random() * 900000));
+                input.classList.add('is-autofilled');
+                updateVerify();
+            }, CFG.otpAutofillMs);
+        }
+
+        // ---------- Wire everything up ----------
+        wrap.querySelectorAll('[data-auth-provider]').forEach(function (btn) {
+            btn.addEventListener('click', function () { open(btn.getAttribute('data-auth-provider')); });
+        });
+
+        wrap.querySelectorAll('[data-authsim-policy]').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const tnc = $('tncModal');
+                if (tnc) tnc.style.display = 'flex';
+            });
+        });
+
+        box.addEventListener('click', function (e) {
+            const el = e.target.closest('[data-action]');
+            if (!el) return;
+            const action = el.getAttribute('data-action');
+            if (action === 'close') close();
+            else if (action === 'pick-account') finishSignIn(el.getAttribute('data-name') || 'Guest');
+            else if (action === 'resend') sendCode();
+            else if (action === 'change-number') { stopTimers(); showStep('phone'); }
+        });
+
+        $('authSimPhoneForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const value = $('authSimPhone').value.trim();
+            const err = $('authSimPhoneError');
+            if (!/^\d{11}$/.test(value)) {
+                err.textContent = 'Enter exactly 11 digits, numbers only.';
+                return;
+            }
+            err.textContent = '';
+            phone = value;
+            sendCode();
+        });
+
+        $('authSimOtpForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if ($('authSimOtp').value.length === 6) finishSignIn('SMS');
+        });
+
+        $('authSimOtp').addEventListener('input', function () {
+            $('authSimOtp').classList.remove('is-autofilled');
+            updateVerify();
+        });
+
+        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') close();
+        });
+
+        digitsOnly($('authSimPhone'));
+        digitsOnly($('authSimOtp'));
+    });
+})();
+// ===================================================================================
+// AUTH SIMULATION END (JS)
 // ===================================================================================

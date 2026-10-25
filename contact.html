@@ -45,7 +45,7 @@
                 <tbody>
                     <tr>
                         <td><b><i class="fa-solid fa-location-dot"></i> Located at:</b></td>
-                        <td><a href="#" id="openMapModalBtn">Zone 1, Aniog, Sagñay, Camarines Sur</a></td>
+                        <td><a href="https://www.google.com/maps?q=Zone+1,+SLPA%2FAniog,+Comprada,+Aniog,+Sagnay,+4421+Camarines+Sur" id="openMapModalBtn">Zone 1, Aniog, Sagñay, Camarines Sur</a></td>
                     </tr>
                     <tr>
                         <td><b><i class="fa-solid fa-phone"></i> Call or Text:</b></td>
@@ -120,6 +120,7 @@
                     <span>Samahan ng Masisinop SLPA - Zone 1, Aniog, Sagñay, Camarines Sur</span>
                 </div>
                 <div class="profile-modal-controls">
+                    <a href="https://maps.app.goo.gl/NmT5tSFRuu98yTHs9" target="_blank" rel="noopener noreferrer" class="zoom-ctrl-btn map-open-link" id="mapOpenLink" title="Open in Google Maps" aria-label="Open in Google Maps"><i class="fa-solid fa-up-right-from-square"></i></a>
                     <button type="button" class="zoom-ctrl-btn" id="mapZoomOutBtn" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                     <span id="mapZoomDisplay" style="font-size: 0.75rem; font-weight: 600; color: #444; min-width: 38px; text-align: center;">100%</span>
                     <button type="button" class="zoom-ctrl-btn" id="mapZoomInBtn" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
@@ -129,16 +130,17 @@
             </div>
             <div class="profile-modal-viewport" id="mapViewport">
                 <div class="profile-canvas-scaler" id="mapCanvasScaler">
-                    <iframe src="https://www.google.com/maps?q=Aniog,+Sag%C3%B1ay,+Camarines+Sur&output=embed" title="Samahan ng Masisinop SLPA Location Map" loading="lazy" allowfullscreen=""></iframe>
+                    <iframe src="https://maps.app.goo.gl/GS7UhQaRcW2THKx77&amp;hl=en&amp;z=17&amp;output=embed" title="Samahan ng Masisinop SLPA Location Map" loading="lazy" allowfullscreen=""></iframe>
                 </div>
             </div>
         </div>
 
-        <!-- Ad placeholder. Paste your ad network's tag inside #adSlotContent (or point it at this id). -->
-        <aside id="adSlot" class="ad-slot" aria-label="Advertisement" data-ad-placement="contact-between-map-and-status">
-            <span class="ad-slot-label">Advertisement</span>
-            <div id="adSlotContent" class="ad-slot-content"></div>
-            <div class="ad-slot-placeholder"><i class="fa-solid fa-rectangle-ad"></i> <span>Ad space</span></div>
+        <!-- Reserved ad space (Google AdSense). Fill in ADSENSE_CLIENT and ADSENSE_SLOT in script.js and the ad appears here.
+             The ids/classes are deliberately not named "ad..." so the box is not hidden by cosmetic ad-block filters. -->
+        <aside id="sponsorSlot" class="sponsor-slot" aria-label="Sponsored space" data-placement="contact-between-map-and-status">
+            <span class="sponsor-slot-label">Advertisement</span>
+            <div id="sponsorSlotContent" class="sponsor-slot-content"></div>
+            <div class="sponsor-slot-placeholder"><i class="fa-solid fa-rectangle-ad"></i> <span>Ad space</span></div>
         </aside>
 
         <div id="sentMessageCard" class="sent-message-popup-card">
@@ -155,7 +157,7 @@
                     <i class="fa-solid fa-pen-to-square"></i> <span class="btn-label">Edit &amp; Resend</span>
                 </button>
                 <button type="button" id="deleteMessageBtn" class="btn-delete-message" aria-label="Delete message" title="Delete">
-                    <i class="fa-solid fa-trash-can"></i> <span class="btn-label">Delete</span>
+                    <i class="fa-solid fa-trash-can"></i> <span class="btn-label">Delete Message</span>
                 </button>
             </div>
         </div>
@@ -199,7 +201,7 @@
                 <i class="fa-solid fa-pen-to-square"></i> Edit &amp; Resend
             </button>
             <button type="button" id="envDeleteBtn" class="btn-submit btn-danger">
-                <i class="fa-solid fa-trash-can"></i> Delete
+                <i class="fa-solid fa-trash-can"></i> Delete Message
             </button>
         </div>
     </div>
