@@ -34,129 +34,73 @@
 </div>
 
 <div class="container">
-    <div class="card-box master-content-card">
-        <h2>Want to Be a Member?</h2>
-        <p>Join the Samahan ng Masisinop community even if you are from another barangay, to start tracking your products, recording sales, or sourcing local goods from Barangay Aniog.</p>
+    <h2>Want to Be a Member?</h2>
+    <p>Join Samahan ng Masisinop community to start tracking your products, recording sales, or sourcing local goods from Barangay Aniog.</p>
 
-        <div class="reg-grid">
-            <div class="card-box reg-card-box">
-                <h3>Create Your Account</h3>
-                <form id="regForm" action="#" method="POST" novalidate>
-                    <div class="form-group">
-                        <label for="username">Full Name:</label>
-                        <input type="text" id="username" name="username" placeholder="e.g., Juan Dela Cruz" required>
-                    </div>
+    <div class="reg-grid">
+        <div class="card-box">
+            <h3>Create Your Account</h3>
+            <form id="regForm" action="thankyou.html" method="POST" novalidate>
+                <div class="form-group">
+                    <label for="username">Full Name:</label>
+                    <input type="text" id="username" name="username" placeholder="e.g., Juan Dela Cruz" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="address">Permanent Address:</label>
-                        <input type="text" id="address" name="address" placeholder="e.g., Zone 1, Aniog, Sagñay, Camarines Sur" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contact_number">Contact Number:</label>
-                        <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
-                        <small class="form-help-text">Must be exactly 11 digits only.</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="roleDisplay">System Role:</label>
-                        <input type="text" id="roleDisplay" class="clickable-input" placeholder="Click this to select your role..." autocomplete="off" readonly required>
-                        <input type="hidden" id="role" name="role" required>
-                    </div>
+                <div class="form-group">
+                    <label for="address">Permanent Address:</label>
+                    <input type="text" id="address" name="address" placeholder="e.g., Zone 1, Aniog, Sagñay, Camarines Sur" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
+                    <small class="form-help-text">Must be exactly 11 digits only.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roleDisplay">System Role:</label>
+                    <input type="text" id="roleDisplay" class="clickable-input" placeholder="Click this to select your role..." autocomplete="off" readonly required>
+                    <input type="hidden" id="role" name="role" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="password-field">Password:</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="password-field" name="password" placeholder="Enter a strong password" autocomplete="new-password" required>
-                            <i class="fa-solid fa-eye toggle-password-icon" id="togglePassword"></i>
-                        </div>
-                        <small class="form-help-text">Must be at least 8 characters long.</small>
+                <div class="form-group">
+                    <label for="password-field">Password:</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password-field" name="password" placeholder="Enter a strong password" autocomplete="new-password" required>
+                        <i class="fa-solid fa-eye toggle-password-icon" id="togglePassword"></i>
                     </div>
-
-                    <div class="form-group terms-group" style="margin-top: 15px; display: flex; align-items: flex-start; gap: 10px;">
-                        <input type="checkbox" id="termsCheckbox" name="terms" required style="width: 20px; height: 20px; accent-color: var(--primary-color); margin-top: 2px; cursor: pointer;">
-                        <label for="termsCheckbox" style="font-weight: normal; font-size: 0.9rem; cursor: pointer; text-align: left;">
-                            I agree to the Terms and Conditions and authorize the National Privacy Commission (NPC) of the Philippines and USWAG to collect, process, and store my personal information in accordance with the (RA 10173) Data Privacy Act of 2012. 
-                            <a href="#" id="openTncModal" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">View USWAG Terms &amp; NPC Notice</a>
-                        </label>
-                    </div>
-                    
-                    <button type="submit" id="submitBtn" class="btn-submit" style="margin-top: 15px;">
-                        <i class="fa-solid fa-user-plus"></i> Submit Registration
-                    </button>
-                </form>
-            </div>
-      
-            <div class="card-box media-card reg-card-box">
-                <h3 style="text-align: center;">Need Help Creating an Account?</h3>
-                <p>Watch this 1-minute video tutorial and see how to register as a local Seller or inter-barangay Buyer.</p>
+                    <small class="form-help-text">Must be at least 8 characters long.</small>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <i class="fa-solid fa-user-plus"></i> Submit Registration
+                </button>
+            </form>
+        </div>
+  
+        <div class="card-box media-card">
+            <h3 style="text-align: center;">Need Help Creating an Account?</h3>
+            <p>Watch this 1-minute video tutorial to see how to register as a local Seller or Buyer.</p>
+    
+            <div class="video-container">
+                <video id="tutorialVideo" loop autoplay muted playsinline preload="metadata">
+                <source src="Video_Tutorial.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video>
         
-                <div class="video-container" style="position: relative;">
-                    <div id="videoLoader" class="video-loading-spinner"></div>
-                    <video id="tutorialVideo" loop autoplay muted playsinline preload="metadata">
-                        <source src="Video_Tutorial.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-            
-                    <button type="button" id="muteToggle" class="mute-btn" aria-label="Turn sound on" aria-pressed="false">
-                        <i class="fa-solid fa-volume-xmark"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-      
-        <!-- AUTH SIMULATION START (HTML 1 of 2: the "or" divider, the three sign-up buttons, the human check and the legal lines). Safe to delete from here to "AUTH SIMULATION END (HTML 1 of 2)"; the form above keeps working. -->
-        <div class="divider-with-text authsim-divider">
-            <hr class="section-divider">
-            <span class="divider-label">or</span>
-            <hr class="section-divider">
-        </div>
-
-        <div id="authSim" class="authsim" aria-label="Quick sign up">
-            <h3 class="authsim-title">Quick Sign Up</h3>
-
-            <div class="authsim-buttons">
-                <button type="button" class="authsim-btn authsim-btn-google" data-auth-provider="google">
-                    <svg class="authsim-g" viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                    <span>Continue with Google</span>
-                </button>
-                <button type="button" class="authsim-btn authsim-btn-facebook" data-auth-provider="facebook">
-                    <i class="fa-brands fa-facebook" aria-hidden="true"></i>
-                    <span>Continue with Facebook</span>
-                </button>
-                <button type="button" class="authsim-btn authsim-btn-sms" data-auth-provider="sms">
-                    <i class="fa-solid fa-comment-sms" aria-hidden="true"></i>
-                    <span>Continue with SMS</span>
+                <button id="muteToggle" class="mute-btn" aria-label="Toggle Sound">
+                <i class="fa-solid fa-volume-xmark"></i>
                 </button>
             </div>
-
-            <div class="authsim-human">
-                <p class="authsim-human-label" id="humanLabel">Let us know you are human</p>
-                <div id="humanCheck" class="cf-widget is-checking" role="status" aria-live="polite" aria-labelledby="humanLabel">
-                    <div class="cf-state">
-                        <span class="cf-spin" aria-hidden="true"></span>
-                        <span class="cf-tick" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                        <span class="cf-text" id="humanText">Verifying...</span>
-                    </div>
-                    <div class="cf-brand">
-                        <svg class="cf-cloud" viewBox="0 0 64 28" width="40" height="18" aria-hidden="true"><path fill="#F6821F" d="M50 26H11C5.5 26 1.5 22.6 1.5 18.2c0-3.9 3-6.9 6.9-7.6C10 5.2 14.6 1.5 20 1.5c4.9 0 9 3 10.5 7.400.5-.1 1.100-.2 1.700-.2 3.900 0 7.100 2.500 7.900 6 .6-.2 1.200-.3 1.900-.3 3.600 0 6.500 2.700 6.500 6.100S53.600 26 50 26z"/><path fill="#FBAD41" d="M54 26c3 0 6-1.800 6-4.600 0-2.400-2-4.400-4.700-4.700-.9 2.700-2.500 5.800-5 9.300H54z"/></svg>
-                        <span class="cf-wordmark">CLOUDFLARE</span>
-                        <span class="cf-links"><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Privacy</a> &bull; <a href="https://developers.cloudflare.com/turnstile/" target="_blank" rel="noopener noreferrer">Help</a></span>
-                    </div>
-                </div>
-            </div>
-
-            <p class="authsim-legal">By continuing, I agree to the USWAG's <a href="#" data-authsim-policy>terms</a>, <a href="#" data-authsim-policy>privacy</a> and <a href="#" data-authsim-policy>cookie policy</a>.</p>
-            <p class="authsim-login">Already have an account? <a href="login.html">Log in</a></p>
         </div>
-        <!-- AUTH SIMULATION END (HTML 1 of 2) -->
+
     </div>
 </div>
-  
+
 <div id="roleModal" class="custom-modal-overlay">
     <div class="custom-modal-box">
-        <h3 style="color: var(--secondary-color); margin-bottom: 10px;">Select System Role</h3>
-        <p style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-color);">Please choose your account type:</p>
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Select System Role</h3>
+        <p style="margin-bottom: 20px; font-size: 0.9rem;">Please choose your account type:</p>
         
         <div style="display: flex; flex-direction: column; gap: 10px;">
             <button type="button" class="btn-submit role-option" data-role="Buyer">Buyer</button>
@@ -167,134 +111,22 @@
     </div>
 </div>
 
-<div id="tncModal" class="custom-modal-overlay">
-    <div class="custom-modal-box" style="max-width: 600px; text-align: left; max-height: 90vh; overflow-y: auto;">
-        <div style="text-align: center; margin-bottom: 15px;">
-            <img src="NPC.png" alt="National Privacy Commission Logo" style="width: 150px; height: 200px; object-fit: contain; background: transparent; display: inline-block;">
-        </div>
-        <br>
-        <h3 style="color: var(--secondary-color); text-align: center; font-size: 1.35rem; margin-bottom: 5px;">National Privacy Commission of the Philippines</h3>
-        <h4 style="color: var(--primary-color); text-align: center; font-size: 1.02rem; margin-bottom: 20px;">Data Privacy Act of 2012 (Republic Act No. 10173) &amp; System Compliance</h4>
-        <br>
-      
-        <div style="font-size: 0.92rem; line-height: 1.6; color: var(--text-color); margin-bottom: 20px;">
-            <p style="margin-bottom: 12px; text-align: justify;">
-                Welcome to <strong>Samahan ng Masisinop - USWAG (Unified System for Work and Growth)</strong>. In compliance with Republic Act No. 10173 (Data Privacy Act of 2012) of the Philippines, we are committed to safeguarding your personal data and upholding your fundamental right to digital privacy.
-            </p><br>
-            <p style="margin-bottom: 12px; text-align: justify;">
-                <strong>Section 1: Collection of Personal Information.</strong> By creating an account, you explicitly authorize USWAG and the Barangay Aniog Sustainable Livelihood Program Association (SLPA) to collect, process, record, organize, store, and update your personal data (including Full Name, Permanent Address, Contact Number, and System Role).
-            </p>
-            <p style="margin-bottom: 12px; text-align: justify;">
-                <strong>Section 2: Purpose and Use of Data.</strong> Information collected is strictly utilized for community member authentication, coordinating agricultural and livelihood product transactions between buyers and sellers, managing microenterprise inventory records, and broadcasting essential system announcements.
-            </p>
-            <p style="margin-bottom: 12px; text-align: justify;">
-                <strong>Section 3: Data Security Measures.</strong> In accordance with NPC standards and guidelines, appropriate organizational, physical, and technical security protocols are enforced to protect your personal information against unauthorized access, disclosure, alteration, or destruction.
-            </p>
-            <p style="margin-bottom: 0; text-align: justify;">
-                <strong>Section 4: Rights of the Data Subject.</strong> As a registered user, you retain the right to be informed, to access, rectify, or erase your data, and to lodge complaints with the National Privacy Commission for any privacy violations.
-            </p>
-        </div>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <button type="button" id="proceedTncBtn" class="btn-submit" style="background-color: var(--primary-color); margin-bottom: 12px;">
-                <i class="fa-solid fa-check-to-slot"></i> Proceed and Continue
-            </button>
-            <div style="font-size: 0.85rem; text-align: center;">
-                <a href="https://www.privacy.gov.ph" target="_blank" rel="noopener noreferrer" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">
-                    <i class="fa-solid fa-external-link-alt"></i> Learn more about the Data Privacy Act (Official NPC Portal)
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div id="warningModal" class="custom-modal-overlay">
     <div class="custom-modal-box">
         <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px; animation: pulseCheck 0.6s ease-in-out;">
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
         <h3 style="color: var(--accent-color); margin-bottom: 10px;">Oops!</h3>
-        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center; color: var(--text-color);">
-          Please fill in all required fields and select a System Role.</p>
+        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+          Please fill in all required fields and select a System Role.
+        </p>
         
         <button type="button" onclick="closeWarningModal()" class="btn-submit" style="background-color: var(--accent-color);">
             Try Again
         </button>
     </div>
 </div>
-
-<!-- AUTH SIMULATION START (HTML 2 of 2: the sign-in pop-up. Big bottom sheet on phones, centered dialog on desktop). Safe to delete from here to "AUTH SIMULATION END (HTML 2 of 2)". -->
-<div id="authSimModal" class="custom-modal-overlay authsim-overlay" role="dialog" aria-modal="true" aria-labelledby="authSimTitle">
-    <div class="authsim-box" id="authSimBox" data-provider="google">
-        <span class="authsim-grab" aria-hidden="true"></span>
-        <button type="button" class="authsim-close" data-action="close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-
-        <section class="authsim-step" data-step="google" hidden>
-            <div class="authsim-brand"><svg class="authsim-g" viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span>Sign in with Google</span></div>
-            <h3 class="authsim-h" id="authSimTitle">Choose an account</h3>
-            <p class="authsim-sub">to continue to <b>Samahan ng Masisinop</b></p>
-            <div class="authsim-accounts">
-                <button type="button" class="authsim-account" data-action="pick-account" data-name="Juan Dela Cruz">
-                    <span class="authsim-avatar">J</span><span class="authsim-account-text"><b>Juan Dela Cruz</b><small>juan.delacruz@gmail.com</small></span>
-                </button>
-                <button type="button" class="authsim-account" data-action="pick-account" data-name="Maria Santos">
-                    <span class="authsim-avatar authsim-avatar-alt">M</span><span class="authsim-account-text"><b>Maria Santos</b><small>maria.santos@gmail.com</small></span>
-                </button>
-                <button type="button" class="authsim-account" data-action="pick-account" data-name="Guest">
-                    <span class="authsim-avatar authsim-avatar-plain"><i class="fa-regular fa-circle-user" aria-hidden="true"></i></span><span class="authsim-account-text"><b>Use another account</b></span>
-                </button>
-            </div>
-            <p class="authsim-fine">Before using this app, you can review the USWAG privacy policy and terms of service.</p>
-        </section>
-
-        <section class="authsim-step" data-step="facebook" hidden>
-            <div class="authsim-brand authsim-brand-fb"><i class="fa-brands fa-facebook" aria-hidden="true"></i> <span>Log in with Facebook</span></div>
-            <h3 class="authsim-h">Continue as Juan Dela Cruz?</h3>
-            <p class="authsim-sub"><b>Samahan ng Masisinop</b> will receive your name and profile picture.</p>
-            <button type="button" class="authsim-primary" data-action="pick-account" data-name="Juan Dela Cruz">Continue as Juan</button>
-            <button type="button" class="authsim-secondary" data-action="close">Cancel</button>
-        </section>
-
-        <section class="authsim-step" data-step="phone" hidden>
-            <div class="authsim-brand authsim-brand-sms"><i class="fa-solid fa-comment-sms" aria-hidden="true"></i> <span>Sign in with SMS</span></div>
-            <h3 class="authsim-h">Mobile Number Verification</h3>
-            <p class="authsim-sub">We will text a One-Time PIN to your mobile number.</p>
-            <form id="authSimPhoneForm" novalidate>
-                <div class="authsim-field">
-                    <label for="authSimPhone">Mobile number</label>
-                    <input id="authSimPhone" type="text" inputmode="numeric" maxlength="11" placeholder="09071128654" autocomplete="tel-national">
-                    <small>Must be exactly 11 digits only.</small>
-                </div>
-                <p class="authsim-error" id="authSimPhoneError" role="alert"></p>
-                <button type="submit" class="authsim-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send code</button>
-            </form>
-        </section>
-
-        <section class="authsim-step" data-step="otp" hidden>
-            <div class="authsim-brand authsim-brand-sms"><i class="fa-solid fa-comment-sms" aria-hidden="true"></i> <span>Sign in with SMS</span></div>
-            <h3 class="authsim-h">Mobile Number Verification</h3>
-            <p class="authsim-sub">We've sent a One-Time PIN to <b id="authSimOtpTo"></b></p>
-            <form id="authSimOtpForm" novalidate>
-                <div class="authsim-field">
-                    <label for="authSimOtp" class="authsim-sr">One-Time PIN</label>
-                    <input id="authSimOtp" class="authsim-otp-input" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code">
-                </div>
-                <button type="submit" class="authsim-primary" id="authSimVerifyBtn" disabled>Verify</button>
-            </form>
-            <p class="authsim-resend"><button type="button" class="authsim-link" id="authSimResend" data-action="resend" disabled>Resend in 2:00</button></p>
-            <button type="button" class="authsim-link" data-action="change-number">Change number</button>
-        </section>
-
-        <section class="authsim-step authsim-center" data-step="busy" hidden>
-            <div class="authsim-spinner" aria-hidden="true"></div>
-            <p class="authsim-sub" id="authSimBusyText" role="status">Signing you in...</p>
-        </section>
-
-        <p class="authsim-demo" id="authSimDemo">Demo sign-in: no account is created and nothing is saved yet.</p>
-    </div>
-</div>
-<!-- AUTH SIMULATION END (HTML 2 of 2) -->
-
+  
 <footer>
     <p>© 2026 USWAG (Unified System for Work and Growth).</p>
 </footer>
