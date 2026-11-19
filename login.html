@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samahan ng Masisinop - Log in</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="login.js" defer></script>
+    <script src="effects.js" defer></script>
+</head>
+<body>
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+        </div>
+        <div class="header-center">
+            <h1>Samahan ng Masisinop</h1>
+            <p>Sustainable Livelihood Program (SLPA) Aniog</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="register.html">Register Now</a>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="card-box auth-wrap">
+        <h2>Log in to USWAG</h2>
+        <p>Members, sellers and the SLP Admin sign in here. After signing in you go to the Home page.</p>
+
+        <div class="auth-tabs" role="tablist">
+            <button type="button" class="auth-tab" id="tabPass" role="tab" aria-selected="true" aria-controls="paneLogin">Password</button>
+            <button type="button" class="auth-tab" id="tabSms" role="tab" aria-selected="false" aria-controls="paneSms">SMS code</button>
+        </div>
+
+        <div id="authMsg" class="auth-msg" role="alert" aria-live="polite"></div>
+
+        <!-- Contact number + password -->
+        <form id="paneLogin" novalidate>
+            <div class="form-group">
+                <label for="loginPhone">Contact Number:</label>
+                <input type="text" id="loginPhone" inputmode="numeric" maxlength="11" placeholder="09071128654" autocomplete="username" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPass">Password:</label>
+                <input type="password" id="loginPass" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn-submit" id="loginBtn"><i class="fa-solid fa-right-to-bracket"></i> Log in</button>
+        </form>
+
+        <!-- SMS one-time code -->
+        <div id="paneSms" hidden>
+            <form id="smsPhoneForm" novalidate>
+                <div class="form-group">
+                    <label for="smsPhone">Mobile Number:</label>
+                    <input type="text" id="smsPhone" inputmode="numeric" maxlength="11" placeholder="09071128654" autocomplete="tel-national" required>
+                </div>
+                <button type="submit" class="btn-submit" id="smsSendBtn"><i class="fa-solid fa-comment-sms"></i> Send me a code</button>
+                <p class="muted" style="margin-top:8px;">New here? Signing in with a code creates your Buyer account automatically.</p>
+            </form>
+            <form id="smsCodeForm" novalidate hidden>
+                <p>We texted a 6-digit code to <strong id="smsTo"></strong>.</p>
+                <div class="form-group">
+                    <label for="smsCode">Verification code:</label>
+                    <input type="text" id="smsCode" class="otp-input-big" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="btn-submit" id="smsVerifyBtn"><i class="fa-solid fa-shield-halved"></i> Verify and log in</button>
+                <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn-secondary" id="smsResend" disabled>Resend code</button>
+                    <button type="button" class="btn-secondary" id="smsChange">Change number</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Cloudflare human check (shown only when TURNSTILE_SITEKEY is set) -->
+        <div id="humanBox" style="margin-top:14px;" hidden>
+            <p class="muted" style="margin-bottom:6px;">Let us know you are human</p>
+            <div id="turnstileSlot"></div>
+        </div>
+
+        <div id="providers" hidden>
+            <p class="auth-sep">or continue with</p>
+            <div class="auth-provider-row">
+                <div class="authpair-google" id="googleFrame"><div id="googleSlot"></div></div>
+                <button type="button" class="authsim-btn authsim-btn-facebook" id="fbBtn" hidden>
+                    <i class="fa-brands fa-facebook" aria-hidden="true"></i><span>Continue with Facebook</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="muted" style="margin-top:18px; text-align:center;">No account yet? <a href="register.html">Register now</a></p>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 USWAG (Unified System for Work and Growth).</p>
+</footer>
+</body>
+</html>
