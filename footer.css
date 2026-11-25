@@ -1,0 +1,134 @@
+/* USWAG shared footer: contact + legal dropdowns, GCash donation QR, feedback link.
+   Loaded after styles.css and app.css, so it only adds to / gently overrides the original footer. */
+footer.site-footer {
+    height: auto;
+    min-height: 0;
+    line-height: 1.5;
+    padding: 20px 16px 14px;
+    position: relative;
+    overflow: visible;
+    text-align: center;
+}
+.site-footer .footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 22px 40px;
+    max-width: 1000px;
+    margin: 0 auto 14px;
+    text-align: left;
+}
+.site-footer .footer-col { min-width: 190px; }
+.site-footer .footer-col h4 {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    opacity: 0.9;
+}
+.site-footer .footer-note {
+    margin: 6px 0 0;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    max-width: 230px;
+}
+
+/* ---- dropdowns (pure <details>, open upward so the page does not jump) ---- */
+.footer-dropdown { position: relative; display: inline-block; }
+.footer-dropdown + .footer-dropdown { margin-top: 8px; display: block; }
+.footer-dropdown > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.footer-dropdown > summary::-webkit-details-marker { display: none; }
+.footer-dropdown > summary::after {
+    content: "\25BE";
+    transition: transform 0.2s ease;
+}
+.footer-dropdown[open] > summary::after { transform: rotate(180deg); }
+.footer-dropdown > summary:hover,
+.footer-dropdown[open] > summary { background: rgba(255, 255, 255, 0.28); }
+.footer-dropdown > summary:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+
+.footer-menu {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    z-index: 60;
+    min-width: 270px;
+    max-width: calc(100vw - 32px);
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    background: #FFFFFF;
+    color: #333333;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    text-align: left;
+}
+.footer-menu li { margin: 0; }
+.footer-menu a {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 6px;
+    color: var(--secondary-color, #1B5E20);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    word-break: break-word;
+}
+.footer-menu a i { width: 16px; margin-top: 3px; text-align: center; flex: none; }
+.footer-menu a:hover,
+.footer-menu a:focus-visible { background: rgba(0, 0, 0, 0.07); color: var(--primary-color, #2E7D32); }
+
+/* ---- GCash QR ---- */
+.footer-qr { text-align: center; }
+.footer-qr img {
+    display: block;
+    width: 124px;
+    height: 124px;
+    margin: 0 auto 6px;
+    padding: 6px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    object-fit: contain;
+}
+.footer-qr .footer-note { margin-left: auto; margin-right: auto; text-align: center; }
+
+/* ---- feedback button ---- */
+.footer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    color: var(--secondary-color, #1B5E20);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.footer-btn:hover { background: #F1F1F1; color: var(--primary-color, #2E7D32); }
+
+.site-footer .footer-copy { margin: 0; font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+    .site-footer .footer-grid { flex-direction: column; align-items: center; text-align: center; }
+    .footer-menu { left: 50%; transform: translateX(-50%); }
+    .site-footer .footer-note { margin-left: auto; margin-right: auto; }
+}

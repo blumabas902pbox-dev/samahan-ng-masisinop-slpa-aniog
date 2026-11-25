@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samahan ng Masisinop - Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="footer.css">
+    <script src="script.js" defer></script>
+    <script src="effects.js" defer></script>
+    <script src="site.js" defer></script>
+    <script src="footer.js" defer></script>
+    <style>
+        .fb-card { max-width: 600px; margin: 0 auto; }
+        .fb-card select,
+        .fb-card textarea {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: inherit;
+            background: #FFFFFF;
+            transition: border-color 0.3s ease;
+        }
+        .fb-card textarea { resize: vertical; }
+        .fb-card select:focus,
+        .fb-card textarea:focus { outline: none; border-color: var(--secondary-color); }
+        .fb-card .is-invalid { border-color: var(--accent-color, #c62828) !important; }
+        .fb-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+        .fb-rating input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+        .fb-rating label {
+            font-size: 1.9rem;
+            line-height: 1;
+            color: #cfcfcf;
+            cursor: pointer;
+            margin: 0;
+            transition: color 0.15s ease;
+        }
+        .fb-rating label:hover,
+        .fb-rating label:hover ~ label,
+        .fb-rating input:checked ~ label { color: #F5B301; }
+        .fb-rating input:focus-visible + label { outline: 2px solid var(--secondary-color); border-radius: 4px; }
+        .fb-counter { text-align: right; font-size: 0.8rem; color: #666666; margin-top: 4px; }
+        .fb-msg {
+            display: none;
+            margin-bottom: 14px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            background: #FDECEA;
+            color: #B71C1C;
+            font-size: 0.92rem;
+            text-align: left;
+        }
+        .fb-msg.show { display: block; }
+        .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="eager">
+        </div>
+        <div class="header-center">
+            <h1>Samahan ng Masisinop</h1>
+            <p>Sustainable Livelihood Program (SLPA) Aniog</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="eager">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="register.html">Register Now</a>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="card-box fb-card">
+        <h2>Help us improve USWAG</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Share your suggestion, idea or problem with the system. Every message is read by the SLP team and the developers. Name, email and contact number are optional.</p>
+
+        <div id="fbMsg" class="fb-msg" role="alert"></div>
+
+        <form id="feedbackForm" action="feedback.php" method="POST" novalidate>
+            <div class="form-group">
+                <label for="fbName">Your Name (Optional):</label>
+                <input type="text" id="fbName" name="name" maxlength="100" placeholder="e.g., Juan Dela Cruz" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+                <label for="fbEmail">Email Address (Optional):</label>
+                <input type="email" id="fbEmail" name="email" maxlength="100" placeholder="e.g., juandelacruz@gmail.com" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="fbPhone">Contact Number (Optional):</label>
+                <input type="text" id="fbPhone" name="contact_number" inputmode="numeric" maxlength="11" placeholder="09071128654" autocomplete="tel">
+                <small class="form-help-text">If you add it, it must be exactly 11 digits only.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="fbCategory">Type of Feedback:</label>
+                <select id="fbCategory" name="category" required>
+                    <option value="">Select one...</option>
+                    <option value="Suggestion">Suggestion - a new idea</option>
+                    <option value="Improvement">Improvement - make something better</option>
+                    <option value="Problem">Problem - something is not working</option>
+                    <option value="Compliment">Compliment - something you like</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label id="fbRatingLabel">How is your experience with USWAG? (Optional)</label>
+                <div class="fb-rating" role="radiogroup" aria-labelledby="fbRatingLabel">
+                    <input type="radio" id="fbStar5" name="rating" value="5"><label for="fbStar5" title="5 - Excellent" aria-label="5 stars">&#9733;</label>
+                    <input type="radio" id="fbStar4" name="rating" value="4"><label for="fbStar4" title="4 - Good" aria-label="4 stars">&#9733;</label>
+                    <input type="radio" id="fbStar3" name="rating" value="3"><label for="fbStar3" title="3 - Okay" aria-label="3 stars">&#9733;</label>
+                    <input type="radio" id="fbStar2" name="rating" value="2"><label for="fbStar2" title="2 - Poor" aria-label="2 stars">&#9733;</label>
+                    <input type="radio" id="fbStar1" name="rating" value="1"><label for="fbStar1" title="1 - Very poor" aria-label="1 star">&#9733;</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fbMessage">Your Feedback:</label>
+                <textarea id="fbMessage" name="message" rows="8" maxlength="2000" placeholder="Tell us what we can add or improve..." required></textarea>
+                <div class="fb-counter"><span id="fbCount">0</span> / 2000 (at least 10 characters)</div>
+            </div>
+
+            <div class="hp-field" aria-hidden="true">
+                <label for="fbWebsite">Leave this empty</label>
+                <input type="text" id="fbWebsite" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <button type="submit" id="fbSubmit" class="btn-submit">
+                <i class="fa-solid fa-paper-plane"></i> Send Feedback
+            </button>
+            <p class="muted" style="text-align:center; margin-top:12px; font-size:0.85rem;">By sending, you agree to our <a href="privacy.html">Privacy Notice</a> and <a href="terms.html">Terms of Service</a>.</p>
+        </form>
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+    var form = document.getElementById('feedbackForm');
+    var box = document.getElementById('fbMsg');
+    var msg = document.getElementById('fbMessage');
+    var count = document.getElementById('fbCount');
+    var DRAFT = 'uswag_feedback_draft';
+    var errors = {
+        category: 'Please choose the type of feedback.',
+        message: 'Please write your feedback (10 to 2000 characters).',
+        name: 'Your name is too long (100 characters at most).',
+        email: 'Please enter a valid email address or leave it empty.',
+        phone: 'Contact number must be exactly 11 digits, or leave it empty.',
+        rating: 'Please pick a rating from 1 to 5 stars, or leave it empty.',
+        limit: 'You have sent several messages already. Please try again in an hour.',
+        server: 'Sorry, we could not save your feedback right now. Please try again later.'
+    };
+
+    function show(text, field) {
+        box.textContent = text;
+        box.classList.add('show');
+        [].forEach.call(form.querySelectorAll('.is-invalid'), function (el) { el.classList.remove('is-invalid'); });
+        if (field) { field.classList.add('is-invalid'); field.focus(); }
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    function updateCount() { count.textContent = msg.value.length; }
+    msg.addEventListener('input', updateCount);
+
+    function saveDraft() {
+        try {
+            var d = {};
+            ['name', 'email', 'contact_number', 'category', 'message'].forEach(function (n) { d[n] = form.elements[n].value; });
+            var r = form.querySelector('input[name="rating"]:checked');
+            d.rating = r ? r.value : '';
+            sessionStorage.setItem(DRAFT, JSON.stringify(d));
+        } catch (e) { /* storage unavailable: ignore */ }
+    }
+    function restoreDraft() {
+        try {
+            var d = JSON.parse(sessionStorage.getItem(DRAFT) || 'null');
+            if (!d) { return; }
+            ['name', 'email', 'contact_number', 'category', 'message'].forEach(function (n) { form.elements[n].value = d[n] || ''; });
+            if (d.rating) { var r = form.querySelector('input[name="rating"][value="' + d.rating + '"]'); if (r) { r.checked = true; } }
+            updateCount();
+        } catch (e) { /* ignore */ }
+    }
+
+    var err = new URLSearchParams(window.location.search).get('error');
+    if (err) {
+        restoreDraft();
+        show(errors[err] || errors.server);
+    }
+
+    form.addEventListener('submit', function (e) {
+        var name = form.elements.name.value.trim();
+        var email = form.elements.email.value.trim();
+        var phone = form.elements.contact_number.value.trim();
+        var cat = form.elements.category;
+        var text = msg.value.trim();
+        if (!cat.value) { e.preventDefault(); return show(errors.category, cat); }
+        if (name.length > 100) { e.preventDefault(); return show(errors.name, form.elements.name); }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { e.preventDefault(); return show(errors.email, form.elements.email); }
+        if (phone && !/^[0-9]{11}$/.test(phone)) { e.preventDefault(); return show(errors.phone, form.elements.contact_number); }
+        if (text.length < 10 || text.length > 2000) { e.preventDefault(); return show(errors.message, msg); }
+        saveDraft();
+        var b = document.getElementById('fbSubmit');
+        b.disabled = true;
+        b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+    });
+})();
+</script>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Get in touch</h4>
+            <details class="footer-dropdown">
+                <summary><i class="fa-solid fa-address-book"></i> Contact information</summary>
+                <ul class="footer-menu">
+                    <li><a href="https://maps.app.goo.gl/6AqQfAo8Km67UPYf8" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-location-dot"></i><span>Zone 1, Aniog, Sagñay, Camarines Sur</span></a></li>
+                    <li><a href="tel:+639383642371"><i class="fa-solid fa-phone"></i><span>+63 938 364 2371</span></a></li>
+                    <li><a href="mailto:slpa.aniog@gmail.com"><i class="fa-solid fa-envelope"></i><span>slpa.aniog@gmail.com</span></a></li>
+                    <li><a href="contact.html"><i class="fa-solid fa-paper-plane"></i><span>Send us a direct message</span></a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <details class="footer-dropdown">
+                <summary><i class="fa-solid fa-scale-balanced"></i> Privacy &amp; Terms</summary>
+                <ul class="footer-menu">
+                    <li><a href="privacy.html"><i class="fa-solid fa-shield-halved"></i><span>Privacy Notice</span></a></li>
+                    <li><a href="terms.html"><i class="fa-solid fa-file-contract"></i><span>Terms of Service</span></a></li>
+                    <li><a href="https://privacy.gov.ph/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square"></i><span>National Privacy Commission</span></a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="footer-col footer-qr">
+            <h4>Donate via GCash</h4>
+            <img src="gcash-qr.png" alt="GCash QR code for donations to Samahan ng Masisinop SLPA" width="124" height="124" loading="lazy" onerror="this.onerror=null;this.src='gcash-qr-placeholder.svg';">
+            <p class="footer-note">Scan with GCash to support our community. Salamat po!</p>
+        </div>
+        <div class="footer-col">
+            <h4>Help us improve</h4>
+            <a class="footer-btn" href="feedback.html"><i class="fa-solid fa-comment-dots"></i> Send Feedback</a>
+            <p class="footer-note">Suggestions and improvements for USWAG are welcome.</p>
+        </div>
+    </div>
+    <p class="footer-copy">© 2026 USWAG (Unified System for Work and Growth).</p>
+</footer>
+
+</body>
+</html>
