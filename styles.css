@@ -2870,70 +2870,586 @@ a.authsim-btn:visited { color: var(--text-color); }
     .announce-date .announce-range { font-size: 0.9rem; padding: 10px 0 11px; }
 }
 
-/* ----- 4) SIGN-IN BUTTONS: each one is a primary + secondary colour pair taken from the palette -----
-        Google   = red    + yellow
-        Facebook = blue   + violet
-        SMS      = orange + green                                                                 */
+/* ----- 4) SIGN-IN BUTTONS: 3-stop palette gradients, zero borders, black text -> white on hover ----- */
+:root {
+    --logo-indigo: #1E1A52;
+    --logo-indigo: color-mix(in srgb, var(--secondary-color) 75%, #000000);
+}
+
 .authsim-btn,
+a.authsim-btn,
 .auth-provider-row .authsim-btn {
-    --pair-a: var(--logo-red);
-    --pair-b: var(--logo-yellow);
+    --grad-start: var(--logo-yellow);
+    --grad-mid: var(--logo-orange);
+    --grad-end: var(--logo-red);
+
     position: relative;
-    border: 2px solid transparent;
-    background:
-        linear-gradient(#FFFFFF, #FFFFFF) padding-box,
-        linear-gradient(135deg, var(--pair-a), var(--pair-b)) border-box;
-    color: var(--text-color);
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 18px;
+    border: none !important;
+    outline: none !important;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-mid) 50%, var(--grad-end) 100%) !important;
+    color: #000000 !important;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
     overflow: hidden;
-    transition: color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    transition: color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
+
 .authsim-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--pair-a), var(--pair-b));
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    z-index: 0;
+    display: none !important;
 }
-.authsim-btn > * { position: relative; z-index: 1; }
+
+.authsim-btn > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Google: Yellow -> Orange -> Red */
+.authsim-btn-google {
+    --grad-start: var(--logo-yellow);
+    --grad-mid: var(--logo-orange);
+    --grad-end: var(--logo-red);
+}
+
+/* Facebook: Blue -> Violet -> Indigo */
+.authsim-btn-facebook {
+    --grad-start: var(--logo-blue);
+    --grad-mid: var(--logo-violet);
+    --grad-end: var(--logo-indigo);
+}
+
+/* SMS: Light Green -> Forest Green -> Dark Green */
+.authsim-btn-sms {
+    --grad-start: var(--light-green);
+    --grad-mid: var(--logo-green);
+    --grad-end: var(--primary-color);
+}
+
+/* Default icon colors (matches black text for uniform contrast) */
+.authsim-btn i,
+.authsim-btn-facebook i,
+.authsim-btn-sms i {
+    color: #000000 !important;
+    transition: color 0.25s ease, transform 0.2s ease;
+}
+
+.authsim-btn .authsim-g {
+    background: #FFFFFF;
+    border-radius: 50%;
+    padding: 2px;
+
+  /* ===================================================================================
+   FORCE UNIFORM QUICK SIGN-UP / LOGIN BUTTONS (Targets #quickAuth directly)
+   =================================================================================== */
+
+#quickAuth,
+#quickAuth .authsim-buttons,
+#quickAuth .auth-provider-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+/* Remove any outer wrapper frame/border around Google */
+#quickAuth .authpair-google,
+.authpair-google {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+}
+
+#quickAuth .authpair-google > div,
+.authpair-google > div {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+}
+
+/* Base style for all 3 buttons inside #quickAuth */
+#quickAuth a,
+#quickAuth button,
+#quickAuth .authsim-btn,
+.authsim-btn {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 11px 16px !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 8px !important;
+    font-family: inherit !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14) !important;
+    cursor: pointer !important;
+    transition: color 0.22s ease, transform 0.12s ease, box-shadow 0.22s ease, filter 0.22s ease !important;
+}
+
+#quickAuth a::before,
+#quickAuth a::after,
+#quickAuth button::before,
+#quickAuth button::after,
+.authsim-btn::before,
+.authsim-btn::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* 1st Button (Google): Red -> Orange -> Yellow */
+#quickAuth > *:nth-child(1),
+#quickAuth .authsim-buttons > *:nth-child(1),
+#quickAuth .auth-provider-row > *:nth-child(1),
+#quickAuth [data-provider="google"],
+#quickAuth [href*="google"],
+.authsim-btn-google {
+    background: linear-gradient(135deg, #D31919 0%, #EB820B 50%, #FFD700 100%) !important;
+}
+
+/* 2nd Button (Facebook): Light Blue -> Purple -> Indigo */
+#quickAuth > *:nth-child(2),
+#quickAuth .authsim-buttons > *:nth-child(2),
+#quickAuth .auth-provider-row > *:nth-child(2),
+#quickAuth [data-provider="facebook"],
+#quickAuth [href*="facebook"],
+.authsim-btn-facebook {
+    background: linear-gradient(135deg, #4FC3F7 0%, #7B3FE4 50%, #322D78 100%) !important;
+}
+
+/* 3rd Button (SMS): Dark Green -> Forest Green -> Light Green */
+#quickAuth > *:nth-child(3),
+#quickAuth .authsim-buttons > *:nth-child(3),
+#quickAuth .auth-provider-row > *:nth-child(3),
+#quickAuth [data-provider="sms"],
+#quickAuth [href*="sms"],
+.authsim-btn-sms {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #8BE28B 100%) !important;
+}
+
+/* Hover & Focus: Text turns White */
+#quickAuth a:hover,
+#quickAuth a:focus-visible,
+#quickAuth button:hover,
+#quickAuth button:focus-visible,
 .authsim-btn:hover,
 .authsim-btn:focus-visible {
-    background:
-        linear-gradient(#FFFFFF, #FFFFFF) padding-box,
-        linear-gradient(135deg, var(--pair-a), var(--pair-b)) border-box;
-    border-color: transparent;
-    color: #FFFFFF;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.24) !important;
+    filter: brightness(1.04) !important;
 }
-.authsim-btn:hover::before,
-.authsim-btn:focus-visible::before { opacity: 1; }
-.authsim-btn:hover i,
-.authsim-btn:focus-visible i { color: #FFFFFF; text-shadow: none; }
-.authsim-btn-google   { --pair-a: var(--logo-red);    --pair-b: var(--logo-orange); }
-.authsim-btn-facebook { --pair-a: var(--light-blue);   --pair-b: var(--logo-violet); }
-.authsim-btn-sms      { --pair-a: var(--light-green); --pair-b: var(--primary-color); }
-.authsim-btn-facebook i { color: var(--light-blue); }
-.authsim-btn-sms i      { color: var(--primary-color); }
-.authsim-btn:hover .authsim-g,
-.authsim-btn:focus-visible .authsim-g { background: #FFFFFF; border-radius: 50%; padding: 2px; }
 
-/* Google's own button (login page) cannot be recoloured, so it sits inside the same red + yellow frame */
-.authpair-google {
-    display: flex;
-    justify-content: center;
-    padding: 6px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, var(--logo-red), var(--logo-orange));
+#quickAuth a:active,
+#quickAuth button:active {
+    transform: scale(0.99) !important;
 }
-.authpair-google > div {
+
+/* 1st Icon (Google): Keep original Google colors in white circle */
+#quickAuth > *:nth-child(1) svg,
+#quickAuth > *:nth-child(1) img,
+#quickAuth > *:nth-child(1) .authsim-g,
+#quickAuth .authsim-buttons > *:nth-child(1) svg,
+#quickAuth .authsim-buttons > *:nth-child(1) .authsim-g,
+#quickAuth .auth-provider-row > *:nth-child(1) svg,
+#quickAuth .auth-provider-row > *:nth-child(1) .authsim-g {
+    background: #FFFFFF !important;
+    border-radius: 50% !important;
+    padding: 3px !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+}
+
+/* 2nd Icon (Facebook): Dark Blue logo color */
+#quickAuth > *:nth-child(2) i,
+#quickAuth > *:nth-child(2):hover i,
+#quickAuth .authsim-buttons > *:nth-child(2) i,
+#quickAuth .authsim-buttons > *:nth-child(2):hover i,
+#quickAuth .auth-provider-row > *:nth-child(2) i,
+#quickAuth .auth-provider-row > *:nth-child(2):hover i {
+    color: #0B4F9C !important;
+    background: #FFFFFF !important;
+    border-radius: 50% !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.95rem !important;
+    text-shadow: none !important;
+}
+
+/* 3rd Icon (SMS): Light / Apple Green logo color */
+#quickAuth > *:nth-child(3) i,
+#quickAuth > *:nth-child(3):hover i,
+#quickAuth .authsim-buttons > *:nth-child(3) i,
+#quickAuth .authsim-buttons > *:nth-child(3):hover i,
+#quickAuth .auth-provider-row > *:nth-child(3) i,
+#quickAuth .auth-provider-row > *:nth-child(3):hover i {
+    color: #56B828 !important;
+    background: #FFFFFF !important;
+    border-radius: 50% !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.85rem !important;
+    text-shadow: none !important;
+}
+}
+
+/* ===================================================================================
+   SITE FOOTER (added): dropdown links INSIDE the footer (Contact, Privacy, Terms, GCash, Feedback)
+   + a dark forest-green copyright bar that matches the navigation bar (no buttons).
+   Used by footer.js. Everything is scoped to footer.site-footer, so nothing above is affected.
+   =================================================================================== */
+footer.site-footer {
+    height: auto;
+    line-height: 1.5;
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer-top {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 16px 20px 14px;
+}
+
+/* the row of dropdown links */
+.footer-links {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    gap: 6px 22px;
+}
+
+.footer-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 2px;
+    color: #FFFFFF;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.footer-trigger:hover {
+    color: var(--logo-yellow);
+}
+
+.footer-trigger[aria-expanded="true"] {
+    color: var(--logo-yellow);
+    border-bottom-color: var(--pressed-color);
+}
+
+.footer-trigger:focus-visible {
+    outline: 2px solid var(--logo-yellow);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.footer-caret {
+    font-size: 0.65rem;
+    transition: transform 0.25s ease;
+}
+
+.footer-trigger[aria-expanded="true"] .footer-caret {
+    transform: rotate(180deg);
+}
+
+/* the pop-ups: they open inside the footer, under the links */
+.footer-panel {
+    background-color: #FFFFFF;
+    color: var(--text-color);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px auto 0;
+    max-width: 640px;
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+footer.site-footer.is-enhanced .footer-panel {
+    display: none;
+}
+
+footer.site-footer.is-enhanced .footer-panel.is-open {
+    display: block;
+    animation: footerPanelIn 0.25s ease-out;
+}
+
+@keyframes footerPanelIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.footer-panel h4 {
+    margin: 0 0 6px;
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    text-align: left;
+}
+
+.footer-panel p {
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    text-align: left;
+}
+
+.footer-panel ul {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+}
+
+.footer-panel li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 9px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.footer-panel li > i {
+    flex: 0 0 1.3em;
+    margin-top: 3px;
+    text-align: center;
+    color: var(--secondary-color);
+}
+
+.footer-panel a {
+    color: var(--secondary-color);
+    font-weight: 600;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.footer-panel a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.footer-panel a:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+.footer-panel .footer-note {
+    margin: 10px 0 0;
+    font-size: 0.78rem;
+    color: #666666;
+}
+
+/* GCash donation */
+.footer-donate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+
+.footer-donate-text {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.footer-qr-box {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 190px;
+    min-height: 190px;
+    padding: 8px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.footer-qr-box img {
+    display: block;
     width: 100%;
-    padding: 6px;
-    border-radius: 6px;
-    background: #FFFFFF;
+    height: auto;
+    max-height: 280px;
+    object-fit: contain;
+    background-color: #FFFFFF;
 }
-.authpair-google:empty,
-.authpair-google > div:empty { display: none; }
+
+.footer-qr-missing {
+    display: none;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666666;
+}
+
+.footer-qr-box.is-missing img {
+    display: none;
+}
+
+.footer-qr-box.is-missing .footer-qr-missing {
+    display: block;
+}
+
+/* feedback form */
+.footer-form .footer-field {
+    margin-bottom: 12px;
+}
+
+.footer-form label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.footer-form label small {
+    font-weight: 400;
+    color: #666666;
+}
+
+.footer-form input[type="text"],
+.footer-form select,
+.footer-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 0.92rem;
+    transition: border-color 0.2s ease;
+}
+
+.footer-form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.footer-form input:focus,
+.footer-form select:focus,
+.footer-form textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.footer-form .footer-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.footer-form .footer-count {
+    display: block;
+    margin-top: 3px;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #777777;
+}
+
+.footer-form-error {
+    min-height: 1.2em;
+    margin: 0 0 8px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.footer-form .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* spam trap: real people never see or reach this field */
+.footer-form .fb-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* the copyright bar: same dark forest green as the navigation bar, text only (no buttons) */
+.footer-bottom {
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.12);
+    padding: 14px 16px;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .footer-top {
+        padding: 14px 12px 12px;
+    }
+
+    .footer-links {
+        gap: 6px 16px;
+    }
+
+    .footer-panel {
+        padding: 16px 14px;
+    }
+
+    .footer-form .footer-two {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .footer-qr-box {
+        width: 170px;
+        min-height: 170px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    footer.site-footer.is-enhanced .footer-panel.is-open,
+    .footer-caret {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* FOOTER END
+   =================================================================================== */

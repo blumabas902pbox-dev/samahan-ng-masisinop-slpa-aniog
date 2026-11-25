@@ -1,8 +1,8 @@
-// Where the backend lives. Leave '' : the Cloudflare Worker answers on the same address as the pages.
+// Where the backend lives. Leave '' : api.php answers on the same address as the pages (Laragon, or your Cloudflare link).
 const API_BASE = '';
 
-// Sends JSON to the backend (Cloudflare Worker) and returns { ok, status, data }. It only throws when the server cannot be reached.
-// Flow: this page (JSON) -> Cloudflare Worker -> D1 database.
+// Sends JSON to api.php and returns { ok, status, data }. It only throws when the server cannot be reached.
+// Flow: this page (JSON) -> api.php -> MySQL database uswag_db.
 async function postJSON(file, payload) {
     const response = await fetch(API_BASE + file, {
         method: 'POST',
@@ -15,7 +15,7 @@ async function postJSON(file, payload) {
     return { ok: response.ok, status: response.status, isJson: data !== null && typeof data === 'object', data: data || {} };
 }
 
-// One place for every request to the Worker. Errors are shown to the person; nothing is ever faked.
+// One place for every request to the api.php. Errors are shown to the person; nothing is ever faked.
 async function callApi(kind, file, payload) {
     return postJSON(file, payload);
 }
@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const doomed = lastMessage;
         // Ask the server to erase the saved row right away (checks id + secret token). The pop animation runs while it works.
         const serverDelete = (doomed && !doomed.simulated && doomed.id && doomed.token)
-            ? postJSON('process_contact.php', { action: 'delete', message_id: doomed.id, token: doomed.token }).catch(function () { /* offline: it is already gone from this browser */ })
+            ? postJSON('api.php?r=contact', { action: 'delete', message_id: doomed.id, token: doomed.token }).catch(function () { /* offline: it is already gone from this browser */ })
             : Promise.resolve();
         closeDeleteConfirm();
         closeEnvelopeModal();
@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function refreshStatus() {
         if (!lastMessage || lastMessage.simulated || !lastMessage.id || !lastMessage.token) return;
         try {
-            const res = await postJSON('process_contact.php', {
+            const res = await postJSON('api.php?r=contact', {
                 action: 'status', message_id: lastMessage.id, token: lastMessage.token
             });
             const newStatus = res.data && res.data.message_status;
@@ -511,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            // JSON -> Apache/PHP (process_contact.php) -> MySQL; the server also sends the SMS and the emails
+            // JSON -> api.php?r=contact -> MySQL; the server also sends the SMS and the emails
             const buttonBefore = sendMessageBtn ? sendMessageBtn.innerHTML : '';
             isSending = true;
             if (sendMessageBtn) {
@@ -520,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             try {
-                const res = await callApi('contact', 'process_contact.php', {
+                const res = await callApi('contact', 'api.php?r=contact', {
                     action: 'send',
                     fullName: nameVal,
                     email: emailVal,
@@ -782,7 +782,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Registration: Terms & NPC notice, then JSON -> Apache/PHP (process_register.php) -> MySQL
+// Registration: Terms & NPC notice, then JSON -> api.php?r=register -> MySQL. A new member is signed in right away.
 document.addEventListener("DOMContentLoaded", function() {
     const regForm = document.getElementById('regForm');
     if (!regForm) return;
@@ -849,16 +849,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
-            const res = await callApi('register', 'process_register.php', {
-                action: 'register',
+            const res = await callApi('register', 'api.php?r=register', {
                 username: username,
                 address: address,
                 contact_number: contact,
                 role: role,
-                password: password
+                password: password,
+                terms: !!(termsCheckbox && termsCheckbox.checked),
+                turnstile: (typeof window.uswagHumanToken === 'function') ? window.uswagHumanToken() : ''
             });
 
             if (!res.ok || res.data.status !== 'success') {
+                if (typeof window.uswagResetHuman === 'function') window.uswagResetHuman();
                 showWarning(res.data.error || res.data.message || 'Registration failed. Please try again.');
                 return;
             }
